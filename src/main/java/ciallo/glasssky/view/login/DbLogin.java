@@ -24,6 +24,7 @@ public class DbLogin extends JFrame {
     }
 
     public void setProperties() {
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("登录mysql");
         h = (int) (UIUnit.getH() / 2);
         w = h;

@@ -2,6 +2,7 @@ package ciallo.glasssky.view.login;
 
 import ciallo.glasssky.controller.AppLoginController;
 import ciallo.glasssky.model.Result;
+import ciallo.glasssky.model.User;
 import ciallo.glasssky.utils.Gbc;
 import ciallo.glasssky.utils.UIUnit;
 
@@ -18,6 +19,7 @@ public class AppLogin extends JFrame {
     }
     public void setProperties(DbLogin dbLogin)
     {
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("登录学分认证管理系统");
         this.setBounds(dbLogin.getBounds());
     }
@@ -55,14 +57,15 @@ public class AppLogin extends JFrame {
         gbc.insets = new Insets(h / 20 , 0, h / 20 , 0);
         Gbc.add(this , login , gbc , 0 , 4 , 2 , 1 ,  0 , 1);
 
-        setLogin(login);
-    }
-
-    private void setLogin(JButton login) {
         login.addActionListener(e->{
-            Result result = appLoginController.login
+            Result result = appLoginController.login(new User(type.getSelectedItem(), user.getText() , password.getText()));
+            if(result.code == 1)
+                System.out.println("登录成功");
+            else
+                JOptionPane.showConfirmDialog(this, result.info , "warning" , JOptionPane.DEFAULT_OPTION);
         });
     }
+
 
 
 }

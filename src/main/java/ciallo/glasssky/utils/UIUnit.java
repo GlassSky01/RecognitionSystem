@@ -1,8 +1,9 @@
 package ciallo.glasssky.utils;
 
+import javax.swing.*;
 import java.awt.*;
 
-public class SizeUnit {
+public class UIUnit {
     private static double W , H;
     static {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -10,6 +11,15 @@ public class SizeUnit {
         H = dimension.getHeight();
     }
 
+    private static final DefaultListCellRenderer center = new DefaultListCellRenderer() {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value,
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            setHorizontalAlignment(SwingConstants.CENTER);
+            return this;
+        }
+    };
     public static double getW() {
         return W;
     }
@@ -32,5 +42,7 @@ public class SizeUnit {
             }
         }
     }
-
+    public static DefaultListCellRenderer getCenter(){
+        return center;
+    }
 }

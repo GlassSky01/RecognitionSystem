@@ -19,7 +19,6 @@ public class Dbs {
             conn = DriverManager.getConnection(url, user, password);
             state = conn.createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
         Dbs.user = user;

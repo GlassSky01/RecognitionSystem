@@ -18,4 +18,7 @@ public class Result {
     public static Result failure(){
         return new Result(0 , "failure" , null);
     }
+    public static Result failure(String info){
+        return new Result(0 , info , null);
+    }
 }

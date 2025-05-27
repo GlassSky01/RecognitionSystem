@@ -47,9 +47,8 @@ public class Navigation extends JPanel {
         }
         exit.addActionListener(e->{
             MainFrame mainFrame = (MainFrame) (this.getParent().getParent().getParent().getParent().getParent());
-//            mainFrame.setVisible(false);
+            mainFrame.setVisible(false);
             mainFrame.getAppLogin().setVisible(true);
-//            cardLayout.show(mainFrame.)
         });
     }
 

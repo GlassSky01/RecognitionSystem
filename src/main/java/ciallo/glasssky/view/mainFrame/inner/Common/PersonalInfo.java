@@ -1,6 +1,7 @@
 package ciallo.glasssky.view.mainFrame.inner.Common;
 
 import ciallo.glasssky.controller.GetPersonalInfoController;
+import ciallo.glasssky.controller.ResetPasswordController;
 import ciallo.glasssky.dao.SaveInfoDao;
 import ciallo.glasssky.model.Result;
 import ciallo.glasssky.utils.Lays;
@@ -24,7 +25,7 @@ public class PersonalInfo extends JPanel {
     protected ArrayList<JTextField> fields = new ArrayList<>();
     protected ArrayList<String> fieldsName = new ArrayList<>();
     protected ArrayList<String> fieldsType = new ArrayList<>();
-
+    private JPasswordField[] jpfs ;
     public PersonalInfo(int w, int h) {
         setProperties();
         setContents(w, h);
@@ -66,10 +67,10 @@ public class PersonalInfo extends JPanel {
         JTextField email = new JTextField();
         JButton saveInfo = new JButton("保存设置");
 
-        Collections.addAll(fields  , username , name , phoneNumber , email);
-        Collections.addAll(fieldsName , "username" , "name" , "phoneNumber" , "email");
-        Collections.addAll(fieldsType , String.class.toString() , String.class.toString(),
-                String.class.toString() , String.class.toString());
+        Collections.addAll(fields, username, name, phoneNumber, email);
+        Collections.addAll(fieldsName, "username", "name", "phoneNumber", "email");
+        Collections.addAll(fieldsType, String.class.toString(), String.class.toString(),
+                String.class.toString(), String.class.toString());
 
         saveInfo.addActionListener(e -> {
             save(phoneNumber.getText(), email.getText());
@@ -125,8 +126,9 @@ public class PersonalInfo extends JPanel {
     private void setPrivate() {
         JLabel label1 = new JLabel("旧密码: ");
         JLabel label2 = new JLabel("新密码: ");
-        JTextField oldPassword = new JTextField();
-        JTextField newPassword = new JTextField();
+        JPasswordField oldPassword = new JPasswordField();
+        JPasswordField newPassword = new JPasswordField();
+        jpfs = new JPasswordField[]{oldPassword , newPassword};
         JButton resetPassword = new JButton("修改密码");
 
         UIUnit.setFont(font, label1, oldPassword, label2, newPassword,
@@ -158,6 +160,19 @@ public class PersonalInfo extends JPanel {
         gbc.insets = new Insets(dy, 0, pady, 0);
         Lays.add(privateInfo, resetPassword, gbc,
                 0, 2, 2, 1);
+
+
+        resetPassword.addActionListener(e -> {
+            Result result = ResetPasswordController.reset(oldPassword.getText(), newPassword.getText());
+            if (result.code == 0)
+                JOptionPane.showConfirmDialog(this, result.info, "warning", JOptionPane.DEFAULT_OPTION);
+            else {
+                JOptionPane.showConfirmDialog(this, result.content, "accept", JOptionPane.DEFAULT_OPTION);
+                LocalUser.password = newPassword.getText();
+                oldPassword.setText("");
+                newPassword.setText("");
+            }
+        });
     }
 
     private SaveInfoDao saveInfoDao = new SaveInfoDao();
@@ -170,12 +185,14 @@ public class PersonalInfo extends JPanel {
 
     }
 
-    public void init(){
+    public void init() {
+
+        for(int i = 0 ; i < 2 ; i ++)
+            jpfs[i].setText("");
         fields.get(0).setText(LocalUser.username);
-        Result result = GetPersonalInfoController.get( fieldsName , fieldsType);
+        Result result = GetPersonalInfoController.get(fieldsName, fieldsType);
         Object[] texts = (Object[]) result.content;
-        for(int i = 0 ; i < texts.length ; i ++)
-        {
+        for (int i = 0; i < texts.length; i++) {
             fields.get(i + 1).setText(texts[i].toString());
         }
     }

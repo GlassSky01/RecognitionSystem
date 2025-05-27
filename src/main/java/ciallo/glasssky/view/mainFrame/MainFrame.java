@@ -6,10 +6,16 @@ import ciallo.glasssky.view.mainFrame.inner.Administrators.AdminNavigation;
 import ciallo.glasssky.view.mainFrame.inner.Administrators.contents.Statistics;
 import ciallo.glasssky.view.mainFrame.inner.Administrators.contents.StudentInfo;
 import ciallo.glasssky.view.mainFrame.inner.Administrators.contents.TeacherInfo;
-import ciallo.glasssky.view.mainFrame.inner.DefaultPage;
-import ciallo.glasssky.view.mainFrame.inner.Navigation;
+import ciallo.glasssky.view.mainFrame.inner.Common.DefaultPage;
+import ciallo.glasssky.view.mainFrame.inner.Common.Navigation;
 import ciallo.glasssky.view.mainFrame.inner.Students.StudentNavigation;
+import ciallo.glasssky.view.mainFrame.inner.Students.contents.ApplyForCredits;
+import ciallo.glasssky.view.mainFrame.inner.Students.contents.CheckStd;
+import ciallo.glasssky.view.mainFrame.inner.Students.contents.StuPersonalInfo;
 import ciallo.glasssky.view.mainFrame.inner.Teachers.TeacherNavigation;
+import ciallo.glasssky.view.mainFrame.inner.Teachers.contents.CheckDetails;
+import ciallo.glasssky.view.mainFrame.inner.Teachers.contents.CreditVerification;
+import ciallo.glasssky.view.mainFrame.inner.Teachers.contents.TeaPersonalInfo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,14 +44,14 @@ public class MainFrame extends JFrame {
     private void setContents() {
         Navigation[] navigation = new Navigation[]{
                 new StudentNavigation(h , contentCard,
-                        new String[]{} ,
-                        new Component[]{}),
+                        new String[]{"查看认证标准" , "申请学分" , "个人信息修改"} ,
+                        new Component[]{new CheckStd(w , h) , new ApplyForCredits(w , h) , new StuPersonalInfo(w , h)}),
                 new TeacherNavigation(h , contentCard ,
-                        new String[]{} ,
-                        new Component[]{}),
+                        new String[]{"审核学分" , "查看学分明细" , "个人信息修改"} ,
+                        new Component[]{new CreditVerification(w , h) , new CheckDetails(w , h) , new TeaPersonalInfo(w , h)}),
                 new AdminNavigation(h , contentCard ,
                         new String[]{"教师信息管理" , "学生信息管理" , "统计"} ,
-                        new Component[]{new TeacherInfo() , new StudentInfo() , new Statistics()})
+                        new Component[]{new TeacherInfo(w , h) , new StudentInfo(w , h) , new Statistics(w , h)})
         };
 
 

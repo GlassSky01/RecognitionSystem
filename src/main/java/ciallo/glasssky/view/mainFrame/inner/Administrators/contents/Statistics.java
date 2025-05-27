@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Statistics extends JPanel {
-    public Statistics(){
+    public Statistics(int w, int h){
         this.setBackground(Color.RED);
     }
 }

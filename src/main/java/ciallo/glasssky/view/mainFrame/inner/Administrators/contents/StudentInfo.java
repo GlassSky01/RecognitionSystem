@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class StudentInfo  extends JPanel {
-    public StudentInfo() {
+    public StudentInfo(int w, int h) {
         this.setBackground(Color.BLACK);
     }
 }

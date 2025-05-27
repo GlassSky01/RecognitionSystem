@@ -2,7 +2,12 @@ package ciallo.glasssky.utils;
 
 import java.awt.*;
 
-public class Gbc {
+public class Lays {
+
+    public static void add(Container a , Component... b){
+        for(Component i : b)
+            a.add(i);
+    }
     public static void add(Container a , Component b , GridBagConstraints gbc , int x , int y , int w , int h){
         gbc.gridx = x;
         gbc.gridy = y ;

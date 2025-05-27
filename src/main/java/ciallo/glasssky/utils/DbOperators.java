@@ -70,7 +70,7 @@ public class DbOperators {
             }
         }catch (SQLException e)
         {
-            e.printStackTrace();
+            throw new Exception();
         }
 
         return arr;

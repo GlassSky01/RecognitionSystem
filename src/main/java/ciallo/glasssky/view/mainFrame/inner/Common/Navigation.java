@@ -1,4 +1,4 @@
-package ciallo.glasssky.view.mainFrame.inner;
+package ciallo.glasssky.view.mainFrame.inner.Common;
 
 import ciallo.glasssky.utils.UIUnit;
 

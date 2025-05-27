@@ -1,6 +1,6 @@
 package ciallo.glasssky.view.mainFrame.inner.Teachers;
 
-import ciallo.glasssky.view.mainFrame.inner.Navigation;
+import ciallo.glasssky.view.mainFrame.inner.Common.Navigation;
 
 import javax.swing.*;
 import java.awt.*;

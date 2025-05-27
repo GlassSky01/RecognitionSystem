@@ -1,10 +1,6 @@
 package ciallo.glasssky.view.mainFrame.inner.Administrators;
 
-import ciallo.glasssky.utils.UIUnit;
-import ciallo.glasssky.view.mainFrame.inner.Administrators.contents.Statistics;
-import ciallo.glasssky.view.mainFrame.inner.Administrators.contents.StudentInfo;
-import ciallo.glasssky.view.mainFrame.inner.Administrators.contents.TeacherInfo;
-import ciallo.glasssky.view.mainFrame.inner.Navigation;
+import ciallo.glasssky.view.mainFrame.inner.Common.Navigation;
 
 import javax.swing.*;
 import java.awt.*;

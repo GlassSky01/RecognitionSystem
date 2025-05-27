@@ -3,7 +3,7 @@ package ciallo.glasssky.view.login;
 import ciallo.glasssky.controller.AppLoginController;
 import ciallo.glasssky.model.Result;
 import ciallo.glasssky.model.User;
-import ciallo.glasssky.utils.Gbc;
+import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.LocalUser;
 import ciallo.glasssky.utils.UIUnit;
 import ciallo.glasssky.view.mainFrame.MainFrame;
@@ -45,25 +45,26 @@ public class AppLogin extends JFrame {
 
         int h = this.getHeight();
         int w = this.getWidth();
-        gbc.insets = new Insets(h / 20, 0, h / 20, 0);
-        Gbc.add(this, title, gbc,
+        gbc.insets = new Insets(h / 5, 0, h / 20, 0);
+        Lays.add(this, title, gbc,
                 0, 0, 3, 1);
 
         gbc.insets = new Insets(0, w / 50, 0, w / 50);
-        Gbc.add(this, userLabel, gbc,
+        Lays.add(this, userLabel, gbc,
                 0, 1, 1, 1);
-        Gbc.add(this, passwordLabel, gbc,
+        Lays.add(this, passwordLabel, gbc,
                 0, 2, 1, 1);
-        Gbc.add(this, user, gbc,
+        Lays.add(this, user, gbc,
                 1, 1, 1, 1, 1, 0);
-        Gbc.add(this, password, gbc,
+        Lays.add(this, password, gbc,
                 1, 2, 1, 1, 1, 0);
-        Gbc.add(this , showPassword  , gbc,
+        Lays.add(this , showPassword  , gbc,
                 2 , 2 , 1 , 1);
 
-        gbc.insets = new Insets(h / 20, 0, h / 20, 0);
-        Gbc.add(this, login, gbc,
-                0, 3, 3, 1, 0, 1);
+        gbc.insets = new Insets(h / 20, 0, 0 , 0);
+        gbc.fill = GridBagConstraints.NONE ;
+        Lays.add(this, login, gbc,
+                0, 3, 3, 1, 0.5, 1);
 
         showPassword.addActionListener(e->{
             if(showPassword.isSelected())

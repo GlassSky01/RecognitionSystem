@@ -2,7 +2,7 @@ package ciallo.glasssky.view.login;
 
 import ciallo.glasssky.controller.DbLoginController;
 import ciallo.glasssky.model.Result;
-import ciallo.glasssky.utils.Gbc;
+import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.UIUnit;
 
 import javax.swing.*;
@@ -26,7 +26,7 @@ public class DbLogin extends JFrame {
 
     public void setProperties() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("登录mysql");
+        this.setTitle("登录MYSQL");
         h = (int) (UIUnit.getH() / 2);
         w = h;
         int x = (int) ((UIUnit.getW() - w) / 2);
@@ -41,8 +41,8 @@ public class DbLogin extends JFrame {
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        JLabel title = new JLabel("登录数据库", SwingConstants.CENTER);
-        JLabel userLabel = new JLabel("user:", SwingConstants.CENTER);
+        JLabel title = new JLabel("登录MYSQL", SwingConstants.CENTER);
+        JLabel userLabel = new JLabel("username:", SwingConstants.CENTER);
         JLabel passwordLabel = new JLabel("password:", SwingConstants.CENTER);
         JTextField user = new JTextField();
         JPasswordField password = new JPasswordField();
@@ -55,24 +55,25 @@ public class DbLogin extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTH;
 
-        gbc.insets = new Insets(h / 20, 0, h / 20, 0);
-        Gbc.add(this, title, gbc,
+        gbc.insets = new Insets(h / 5, 0, h / 20, 0);
+        Lays.add(this, title, gbc,
                 0, 0, 3, 1);
 
         gbc.insets = new Insets(0, w / 50, 0, w / 50);
-        Gbc.add(this, userLabel, gbc,
+        Lays.add(this, userLabel, gbc,
                 0, 1, 1, 1);
-        Gbc.add(this, passwordLabel, gbc,
+        Lays.add(this, passwordLabel, gbc,
                 0, 2, 1, 1);
-        Gbc.add(this, user, gbc,
+        Lays.add(this, user, gbc,
                 1, 1, 1, 1, 1, 0);
-        Gbc.add(this, password, gbc,
+        Lays.add(this, password, gbc,
                 1, 2, 1, 1, 1, 0);
-        Gbc.add(this , showPassword  , gbc,
+        Lays.add(this , showPassword  , gbc,
                 2 , 2 , 1 , 1);
 
-        gbc.insets = new Insets(h / 20, 0, h / 20, 0);
-        Gbc.add(this, login, gbc,
+        gbc.fill = GridBagConstraints.NONE ;
+        gbc.insets = new Insets(h / 20, 0, 0, 0);
+        Lays.add(this, login, gbc,
                 0, 3, 3, 1, 0, 1);
 
         showPassword.addActionListener(e->{

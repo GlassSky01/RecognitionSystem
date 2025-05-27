@@ -33,12 +33,11 @@ public class Dbs {
             DbOperators.execute("use GlassSkyRecognitionSystem;");
 
             //用户表
-            DbOperators.execute("create table Users(\n" +
+            DbOperators.execute("create table if not exists Users(\n" +
                     "    id int auto_increment primary key,\n" +
                     "    username varchar(20),\n" +
                     "    password varchar(20),\n" +
-                    "    role varchar(5)\n" +
-                    "\n" +
+                    "    role int\n" +
                     ")ENGINE=InnoDB , auto_increment= 100000;");
             DbOperators.execute("insert into users(id , username , password , role) value(100000 , 'root' , '123456' , 2);");
         }

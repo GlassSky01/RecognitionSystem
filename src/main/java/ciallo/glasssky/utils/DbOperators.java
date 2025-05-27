@@ -34,12 +34,12 @@ public class DbOperators {
             throw new Exception();
         }
     }
-    public static ArrayList<Object[]> executeQuery(String sql , Object[] types , Object... objects) throws Exception {
+    public static ArrayList<Object[]> executeQuery(String sql , String[] types , Object... objects) throws Exception {
         ArrayList<Object[]> arr = new ArrayList<>();
         try(PreparedStatement state = conn.prepareStatement(sql)) {
             for (int i = 0; i < objects.length; i++) {
-                System.out.println(objects[i]);
-                System.out.println(objects[i].getClass());
+//                System.out.println(objects[i]);
+//                System.out.println(objects[i].getClass());
                 if (objects[i] instanceof String) {
                     state.setString(i + 1, (String) objects[i]);
                 } else if (objects[i] instanceof Integer) {
@@ -54,18 +54,18 @@ public class DbOperators {
             while (result.next()) {
                 Object[] obj = new Object[types.length];
                 for (int i = 0; i < obj.length; i++) {
-                    System.out.println(types[i].getClass());
-                    if (types[i] instanceof String) {
+//                    System.out.println(types[i].getClass());
+                    if (String.class.toString().equals(types[i])) {
                         obj[i] = result.getString(i + 1);
-                    } else if (types[i] instanceof Integer) {
+                    } else if (Integer.class.toString().equals(types[i])) {
                         obj[i] = result.getInt(i + 1);
-                    } else if (types[i] instanceof Double) {
+                    } else if (Double.class.toString().equals(types[i])) {
                         obj[i] = result.getDouble(i + 1);
                     } else {
                         throw new Exception("未知类型");
                     }
                 }
-                System.out.println(obj[0]);
+//                System.out.println(obj[0]);
                 arr.add(obj);
             }
         }catch (SQLException e)

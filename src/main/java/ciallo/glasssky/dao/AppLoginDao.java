@@ -8,17 +8,17 @@ import java.sql.Statement;
 
 public class AppLoginDao {
     public Result login(User user) {
-        int cnt= 0;
+        int role;
         try {
-            cnt = (int) DbOperators.executeQuery(
-                    "select count(username) from Users where username = ? and password = ? and role = ?;"
-                    ,new Object[]{0} , user.username , user.password , user.role
+            role = (int) DbOperators.executeQuery(
+                    "select role from Users where username = ? and password = ? ;"
+                    , new String[]{Integer.class.toString()}, user.username, user.password
             ).get(0)[0];
         } catch (Exception e) {
             e.printStackTrace();
+            return Result.failure("账号或密码错误");
         }
-        if(cnt == 1)
-            return Result.success();
-        return Result.failure("角色或账号或密码错误");
+        return Result.success(role);
+
     }
 }

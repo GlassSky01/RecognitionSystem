@@ -28,7 +28,7 @@ public class UIUnit {
     }
     public static Font getFont(double size , double ratio)
     {
-        return new Font("" , Font.PLAIN , (int) (size / ratio));
+        return new Font("宋体" , Font.PLAIN , (int) (size / ratio));
     }
 
     public static void setFont(Font font , Object... obj)

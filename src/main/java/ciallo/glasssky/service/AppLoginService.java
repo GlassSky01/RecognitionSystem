@@ -18,7 +18,7 @@ public class AppLoginService {
         Result result = appLoginDao.login(user);
         if(result.code == 1)
         {
-            result.content = new String[]{"Student" , "Teacher" , "Administrator"}[(int) result.content];
+            ((Object[]) result.content)[0] = new String[]{"Student" , "Teacher" , "Administrator"}[(int) ((Object[]) result.content)[0]];
         }
         return result;
     }

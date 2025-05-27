@@ -33,6 +33,11 @@ public class Navigation extends JPanel {
             CardLayout cardLayout = (CardLayout) contentCard.getLayout();
             int finalI = i;
             buttons[i].addActionListener(e->{
+                try{
+                    allPages[finalI].getClass().getMethod("init").invoke(allPages[finalI]);
+                }catch (Exception ex){
+                    System.out.println("没有这个方法");
+                }
                 cardLayout.show(contentCard , allPages[finalI].getClass().toString());
             });
         }

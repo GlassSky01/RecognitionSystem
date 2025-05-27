@@ -59,15 +59,20 @@ public class DbLogin extends JFrame {
         Lays.add(this, title, gbc,
                 0, 0, 3, 1);
 
-        gbc.insets = new Insets(0, w / 50, 0, w / 50);
+        gbc.insets = new Insets(0, w / 20, 0, 0);
         Lays.add(this, userLabel, gbc,
                 0, 1, 1, 1);
         Lays.add(this, passwordLabel, gbc,
                 0, 2, 1, 1);
+
+        gbc.insets = new Insets(0, 0, 0, 0);
+
         Lays.add(this, user, gbc,
                 1, 1, 1, 1, 1, 0);
         Lays.add(this, password, gbc,
                 1, 2, 1, 1, 1, 0);
+        gbc.insets = new Insets(0, 0, 0, w / 50);
+
         Lays.add(this , showPassword  , gbc,
                 2 , 2 , 1 , 1);
 

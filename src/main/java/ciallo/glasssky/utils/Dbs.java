@@ -39,7 +39,25 @@ public class Dbs {
                     "    password varchar(20),\n" +
                     "    role int\n" +
                     ")ENGINE=InnoDB , auto_increment= 100000;");
-            DbOperators.execute("insert into users(id , username , password , role) value(100000 , 'root' , '123456' , 2);");
+
+            //学生测试账号
+            DbOperators.execute("insert into users(id , username , password , role) value(1 , 'stu' , '123456' , 0);");
+            //教师测试账号
+            DbOperators.execute("insert into users(id , username , password , role) value(2 , 'tea' , '123456' , 1);");
+            //默认管理员
+            DbOperators.execute("insert into users(id , username , password , role) value(3 , 'root' , '123456' , 2);");
+
+            DbOperators.execute("create table if not exists UsersInformation(\n" +
+                    "    id int ,\n" +
+                    "    name varchar(20),\n" +
+                    "    phoneNumber varchar(20),\n" +
+                    "    email varchar(20),\n" +
+                    "    professional varchar(20),\n" +
+                    "    class int ,\n" +
+                    "    tutor varchar(20),\n" +
+                    "    foreign key (id) references users(id) on delete cascade \n" +
+                    ")ENGINE=InnoDB;");
+
         }
         catch (Exception e)
         {

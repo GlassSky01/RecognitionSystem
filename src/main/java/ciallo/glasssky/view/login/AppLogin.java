@@ -30,8 +30,8 @@ public class AppLogin extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
 
         JLabel title = new JLabel("登录学分认证系统" , SwingConstants.CENTER);
-        JLabel userLabel = new JLabel("用户名:", SwingConstants.CENTER);
-        JLabel passwordLabel = new JLabel("密码:", SwingConstants.CENTER);
+        JLabel userLabel = new JLabel("用户名: ", SwingConstants.CENTER);
+        JLabel passwordLabel = new JLabel("密码: ", SwingConstants.CENTER);
         JTextField user = new JTextField();
         JPasswordField password = new JPasswordField();
         password.setEchoChar('*');
@@ -49,22 +49,27 @@ public class AppLogin extends JFrame {
         Lays.add(this, title, gbc,
                 0, 0, 3, 1);
 
-        gbc.insets = new Insets(0, w / 50, 0, w / 50);
+        gbc.insets = new Insets(0, w / 20, 0, 0);
         Lays.add(this, userLabel, gbc,
                 0, 1, 1, 1);
         Lays.add(this, passwordLabel, gbc,
                 0, 2, 1, 1);
+
+        gbc.insets = new Insets(0, 0, 0, 0);
         Lays.add(this, user, gbc,
                 1, 1, 1, 1, 1, 0);
         Lays.add(this, password, gbc,
                 1, 2, 1, 1, 1, 0);
+
+        gbc.insets = new Insets(0, 0, 0, w / 50);
+
         Lays.add(this , showPassword  , gbc,
                 2 , 2 , 1 , 1);
 
         gbc.insets = new Insets(h / 20, 0, 0 , 0);
         gbc.fill = GridBagConstraints.NONE ;
         Lays.add(this, login, gbc,
-                0, 3, 3, 1, 0.5, 1);
+                0, 3, 3, 1, 0, 1);
 
         showPassword.addActionListener(e->{
             if(showPassword.isSelected())
@@ -85,10 +90,11 @@ public class AppLogin extends JFrame {
         if(result.code == 1){
             this.setVisible(false);
             mainFrame.setVisible(true);
-            LocalUser.setInfo(user.getText() , password.getText());
+            Object[] content = (Object[]) result.content;
+            LocalUser.setInfo(user.getText() , password.getText() , content[0] , (Integer) (content[1]));
             user.setText("");
             password.setText("");
-            mainFrame.show((String) result.content);
+            mainFrame.show((String) content[0]);
         }
         else
             JOptionPane.showConfirmDialog(this, result.info , "warning" , JOptionPane.DEFAULT_OPTION);

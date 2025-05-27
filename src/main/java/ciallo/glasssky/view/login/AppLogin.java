@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class AppLogin extends JFrame {
     private AppLoginController appLoginController = new AppLoginController();
-    private MainFrame mainFrame = new MainFrame();
+    private MainFrame mainFrame = new MainFrame(this);
     public AppLogin(DbLogin dbLogin, Font font1, Font font2){
         this.setProperties(dbLogin );
         this.setContents(font1 , font2);

@@ -2,6 +2,7 @@ package ciallo.glasssky.view.mainFrame;
 
 import ciallo.glasssky.utils.LocalUser;
 import ciallo.glasssky.utils.UIUnit;
+import ciallo.glasssky.view.login.AppLogin;
 import ciallo.glasssky.view.mainFrame.inner.Administrators.AdminNavigation;
 import ciallo.glasssky.view.mainFrame.inner.Administrators.contents.Statistics;
 import ciallo.glasssky.view.mainFrame.inner.Administrators.contents.StudentInfo;
@@ -24,8 +25,12 @@ public class MainFrame extends JFrame {
     private int w, h;
     private JPanel contentCard = new JPanel(new CardLayout());
     private JPanel navigationCard = new JPanel(new CardLayout());
-
-    public MainFrame() {
+    private AppLogin appLogin;
+    public AppLogin getAppLogin(){
+        return appLogin;
+    }
+    public MainFrame(AppLogin appLogin) {
+        this.appLogin = appLogin;
         setProperties();
         setContents();
     }
@@ -72,9 +77,8 @@ public class MainFrame extends JFrame {
     public void show(String user) {
 
         DefaultPage defaultPage = (DefaultPage) contentCard.getComponent(0);
-        ((CardLayout)contentCard.getLayout()).show(contentCard , defaultPage.getClass().toString());
+        ((CardLayout)contentCard.getLayout()).show(contentCard , "default");
         CardLayout cardLayout = (CardLayout) navigationCard.getLayout();
-
         if ("Student".equals(user)) {
             cardLayout.show(navigationCard , StudentNavigation.class.toString());
 

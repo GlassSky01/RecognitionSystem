@@ -39,7 +39,7 @@ public class PersonalInfo extends JPanel {
         JLabel title = new JLabel("个人信息设置", SwingConstants.CENTER);
         title.setFont(fontTitle);
 
-        this.font = UIUnit.getFont(h, 25);
+        this.font = UIUnit.getFont(h, 30);
         dx = w / 50;
         dy = h / 50;
         padx = dx * 3;

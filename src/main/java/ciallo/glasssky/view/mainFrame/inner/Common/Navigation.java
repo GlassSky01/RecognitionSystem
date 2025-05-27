@@ -1,6 +1,7 @@
 package ciallo.glasssky.view.mainFrame.inner.Common;
 
 import ciallo.glasssky.utils.UIUnit;
+import ciallo.glasssky.view.mainFrame.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,14 +24,17 @@ public class Navigation extends JPanel {
         this.allPages = allPages;
         JButton[] buttons = new JButton[buttonTexts.length];
         JPanel panel = new JPanel(new GridLayout(allPages.length , 1));
+        JButton exit = new JButton("退出登录");
+        exit.setFont(font);
         this.add(panel , BorderLayout.NORTH);
+        this.add(exit , BorderLayout.SOUTH);
 
+        CardLayout cardLayout = (CardLayout) contentCard.getLayout();
         for(int i = 0 ; i < allPages.length ; i ++)
         {
             buttons[i] = new JButton(buttonTexts[i]);
             buttons[i].setFont(font);
             panel.add(buttons[i]);
-            CardLayout cardLayout = (CardLayout) contentCard.getLayout();
             int finalI = i;
             buttons[i].addActionListener(e->{
                 try{
@@ -41,6 +45,12 @@ public class Navigation extends JPanel {
                 cardLayout.show(contentCard , allPages[finalI].getClass().toString());
             });
         }
+        exit.addActionListener(e->{
+            MainFrame mainFrame = (MainFrame) (this.getParent().getParent().getParent().getParent().getParent());
+//            mainFrame.setVisible(false);
+            mainFrame.getAppLogin().setVisible(true);
+//            cardLayout.show(mainFrame.)
+        });
     }
 
 

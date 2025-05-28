@@ -1,8 +1,17 @@
 package ciallo.glasssky.utils;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Lays {
+
+    public static JFrame getFrame(Component a){
+        while(!(a instanceof JFrame))
+        {
+            a = a.getParent();
+        }
+        return (JFrame) a;
+    }
 
     public static void add(Container a , Component... b){
         for(Component i : b)

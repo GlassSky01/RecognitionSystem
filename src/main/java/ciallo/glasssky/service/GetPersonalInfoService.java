@@ -8,9 +8,9 @@ import java.util.List;
 
 public class GetPersonalInfoService {
 
-    public static Result get(List<String> fieldsName , ArrayList<String> types) {
+    public static Result get(List<String> fieldsName , ArrayList<Class<?>> types) {
         ArrayList<String> newName = new ArrayList<>();
-        ArrayList<String> newType = new ArrayList<>();
+        ArrayList<Class<?>> newType = new ArrayList<>();
         for(int i = 1 ; i < fieldsName.size() ; i ++){
             newName.add(fieldsName.get(i));
             newType.add(types.get(i));

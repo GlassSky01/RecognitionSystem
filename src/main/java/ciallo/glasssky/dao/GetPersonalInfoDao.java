@@ -7,14 +7,14 @@ import ciallo.glasssky.utils.LocalUser;
 import java.util.ArrayList;
 
 public class GetPersonalInfoDao {
-    public static Result get(ArrayList<String> newList , ArrayList<String> types) {
+    public static Result get(ArrayList<String> newList , ArrayList<Class<?>> types) {
         Object[] objects = new Object[newList.size()];
         for(int i = 0 ; i < objects.length ;i  ++)
         {
             try {
                 objects[i] = DbOperators.executeQuery(
                         "select "+ newList.get(i)+" from UsersInformation where id = ?;",
-                        new String[]{types.get(i)},
+                        new Class<?>[]{types.get(i)},
                         LocalUser.id
                 ).get(0)[0];
             } catch (Exception e) {

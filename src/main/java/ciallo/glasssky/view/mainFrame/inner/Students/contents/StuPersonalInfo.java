@@ -1,5 +1,6 @@
 package ciallo.glasssky.view.mainFrame.inner.Students.contents;
 
+import ciallo.glasssky.utils.DbOperators;
 import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.UIUnit;
 import ciallo.glasssky.view.mainFrame.inner.Common.PersonalInfo;
@@ -14,6 +15,8 @@ public class StuPersonalInfo extends PersonalInfo {
         super(w , h);
         setContents();
     }
+
+    JTextField tutor;
     private void setContents(){
         JLabel label1 = new JLabel("专业: " , SwingConstants.CENTER);
         JLabel label2 = new JLabel("班级: " , SwingConstants.CENTER);
@@ -21,11 +24,11 @@ public class StuPersonalInfo extends PersonalInfo {
 
         JTextField professional = new JTextField();
         JTextField clazz = new JTextField();
-        JTextField tutor = new JTextField();
+        tutor = new JTextField();
 
         Collections.addAll(fields , professional , clazz , tutor);
-        Collections.addAll(fieldsName , "professional" , "class" , "tutor");
-        Collections.addAll(fieldsType , String.class.toString() , Integer.class.toString() , String.class.toString());
+        Collections.addAll(fieldsName , "professional" , "class" , "tutorId");
+        Collections.addAll(fieldsType , String.class , Integer.class, Integer.class);
 
 
         professional.setEditable(false);
@@ -53,5 +56,14 @@ public class StuPersonalInfo extends PersonalInfo {
                 1, 5, 1, 1, 1, 0);
         Lays.add(publicInfo, tutor, gbc,
                 1, 6, 1, 1, 1, 0);
+    }
+    public void init(){
+        super.init();
+        try {
+            tutor.setText(DbOperators.executeQuery("select name from UsersInformation where id = ? ;",
+                    new Class<?>[]{String.class} , Integer.parseInt(tutor.getText())).get(0)[0].toString());
+        } catch (Exception e) {
+            System.out.println("查询导师失败");
+        }
     }
 }

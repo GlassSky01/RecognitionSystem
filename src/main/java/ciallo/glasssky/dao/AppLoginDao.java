@@ -12,7 +12,7 @@ public class AppLoginDao {
         try {
             obj = DbOperators.executeQuery(
                     "select role, id from Users where username = ? and password = ? ;"
-                    , new String[]{Integer.class.toString() , Integer.class.toString()}, user.username, user.password
+                    , new Class<?>[]{Integer.class , Integer.class}, user.username, user.password
             ).get(0);
         } catch (Exception e) {
             e.printStackTrace();

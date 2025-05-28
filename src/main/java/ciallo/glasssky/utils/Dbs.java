@@ -50,8 +50,9 @@ public class Dbs {
                     "    email varchar(20),\n" +
                     "    professional varchar(20),\n" +
                     "    class int ,\n" +
-                    "    tutor varchar(20),\n" +
-                    "    foreign key (id) references users(id) on delete cascade \n" +
+                    "    tutorId int,\n" +
+                    "    foreign key (id) references users(id ) on delete cascade,\n" +
+                    "    foreign key (tutorId) references users(id ) on delete cascade\n" +
                     ")ENGINE=InnoDB;");
             try {
                 //学生测试账号
@@ -60,9 +61,9 @@ public class Dbs {
                 DbOperators.execute("insert into users(id , username , password , role) value(2 , 'tea' , '123456' , 1);");
                 //默认管理员
                 DbOperators.execute("insert into users(id , username , password , role) value(3 , 'root' , '123456' , 2);");
-                DbOperators.execute("insert into usersinformation(id) value(1);");
-                DbOperators.execute("insert into usersinformation(id) value(2);");
-                DbOperators.execute("insert into usersinformation(id) value(3);");
+                DbOperators.execute("insert into usersinformation(id , tutorId , name) value(1 , 2 , 'student');");
+                DbOperators.execute("insert into usersinformation(id , name ) value(2 , 'teacher');");
+                DbOperators.execute("insert into usersinformation(id , name ) value(3 , 'root');");
             } catch (Exception e) {
                 System.out.println("已插入初始角色");
             }
@@ -70,21 +71,29 @@ public class Dbs {
             //主申请信息
             DbOperators.execute("create table if not exists CreditRequestMain(\n" +
                     "    requestId int primary key auto_increment,\n" +
-                    "    tutor varchar(20) ,\n" +
+                    "    tutorId int ,\n" +
                     "    file longblob,\n" +
                     "    dates date,\n" +
                     "    total double,\n" +
                     "    id int ,\n" +
-                    "    foreign key (id) references users(id) on delete cascade\n" +
+                    "    getTotal double,\n" +
+                    "    grade varchar(20),\n" +
+                    "    auditDate date,\n" +
+                    "    auditState int default 0,\n" +
+                    "    auditAdvice varchar(1024),\n" +
+                    "    foreign key (id) references users(id) on delete cascade,\n" +
+                    "    foreign key (tutorId) references users(id) on delete cascade\n" +
                     ")ENGINE=InnoDB;");
 
             //申请细节
             DbOperators.execute("create table if not exists CreditRequestDetails(\n" +
+                    "    detailsId int primary key auto_increment,\n" +
                     "    types varchar(20) ,\n" +
                     "    project varchar(20) ,\n" +
                     "    content varchar(20) ,\n" +
-                    "    score varchar(20),\n" +
+                    "    score double,\n" +
                     "    requestId int ,\n" +
+                    "    getScore double,\n" +
                     "    foreign key (requestId) references CreditRequestMain(requestId) on delete cascade\n" +
                     ")ENGINE=InnoDB;");
         } catch (Exception e) {

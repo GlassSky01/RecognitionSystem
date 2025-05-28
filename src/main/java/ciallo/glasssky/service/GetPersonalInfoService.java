@@ -19,8 +19,8 @@ public class GetPersonalInfoService {
         if(result.content != null){
             Object[] objects = (Object[]) result.content;
             for(int i = 0 ;  i< objects.length ; i ++)
-                if(objects[i] == null)
-                    objects[i] = "无";
+                if(objects[i] == null || objects[i].equals(0))
+                    objects[i] = "";
         }
         return result;
     }

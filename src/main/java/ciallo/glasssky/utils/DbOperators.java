@@ -17,7 +17,7 @@ public class DbOperators {
 
     }
 
-    public static ArrayList<Object[]> executeQuery(String sql, String[] types, Object... objects) throws Exception {
+    public static ArrayList<Object[]> executeQuery(String sql, Class<?>[] types, Object... objects) throws Exception {
         ArrayList<Object[]> arr = new ArrayList<>();
         try (PreparedStatement state = conn.prepareStatement(sql)) {
             set(state, objects);
@@ -65,15 +65,15 @@ public class DbOperators {
         }
     }
 
-    private static void get(ResultSet result, Object[] obj, String[] types) throws Exception {
+    private static void get(ResultSet result, Object[] obj, Class<?>[] types) throws Exception {
         for (int i = 0; i < obj.length; i++) {
-            if (String.class.toString().equals(types[i])) {
+            if (String.class.equals(types[i])) {
                 obj[i] = result.getString(i + 1);
-            } else if (Integer.class.toString().equals(types[i])) {
+            } else if (Integer.class.equals(types[i])) {
                 obj[i] = result.getInt(i + 1);
-            } else if (Double.class.toString().equals(types[i])) {
+            } else if (Double.class.equals(types[i])) {
                 obj[i] = result.getDouble(i + 1);
-            } else if (InputStream.class.toString().equals(types[i])) {
+            } else if (InputStream.class.equals(types[i])) {
                 obj[i] = result.getBinaryStream(i + 1);
             } else {
                 throw new Exception("未知类型");

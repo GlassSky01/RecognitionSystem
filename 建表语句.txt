@@ -20,26 +20,35 @@ create table if not exists UsersInformation(
     email varchar(20),
     professional varchar(20),
     class int ,
-    tutor varchar(20),
-    foreign key (id) references users(id)
+    tutorId int,
+    foreign key (id) references users(id ) on delete cascade,
+    foreign key (tutorId) references users(id ) on delete cascade
 )ENGINE=InnoDB;
 
 create table if not exists CreditRequestMain(
     requestId int primary key auto_increment,
-    tutor varchar(20) ,
+    tutorId int ,
     file longblob,
     dates date,
     total double,
     id int ,
-    foreign key (id) references users(id) on delete cascade
+    getTotal double,
+    grade varchar(20),
+    auditDate date,
+    auditState int default 0,
+    auditAdvice varchar(1024),
+    foreign key (id) references users(id) on delete cascade,
+    foreign key (tutorId) references users(id) on delete cascade
 )ENGINE=InnoDB;
 
 
 create table if not exists CreditRequestDetails(
+    detailsId int primary key auto_increment,
     types varchar(20) ,
     project varchar(20) ,
     content varchar(20) ,
-    score varchar(20),
+    score double,
     requestId int ,
+    getScore double,
     foreign key (requestId) references CreditRequestMain(requestId) on delete cascade
 )ENGINE=InnoDB;

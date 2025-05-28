@@ -24,7 +24,7 @@ public class PersonalInfo extends JPanel {
     protected int dy;
     protected ArrayList<JTextField> fields = new ArrayList<>();
     protected ArrayList<String> fieldsName = new ArrayList<>();
-    protected ArrayList<String> fieldsType = new ArrayList<>();
+    protected ArrayList<Class<?>> fieldsType = new ArrayList<>();
     private JPasswordField[] jpfs ;
     public PersonalInfo(int w, int h) {
         setProperties();
@@ -69,8 +69,8 @@ public class PersonalInfo extends JPanel {
 
         Collections.addAll(fields, username, name, phoneNumber, email);
         Collections.addAll(fieldsName, "username", "name", "phoneNumber", "email");
-        Collections.addAll(fieldsType, String.class.toString(), String.class.toString(),
-                String.class.toString(), String.class.toString());
+        Collections.addAll(fieldsType, String.class, String.class,
+                String.class, String.class);
 
         saveInfo.addActionListener(e -> {
             save(phoneNumber.getText(), email.getText());

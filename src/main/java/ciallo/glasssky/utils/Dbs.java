@@ -27,7 +27,8 @@ public class Dbs {
         init();
         return true;
     }
-    public static void init(){
+
+    public static void init() {
         try {
             DbOperators.execute("create database if not exists GlassSkyRecognitionSystem;");
             DbOperators.execute("use GlassSkyRecognitionSystem;");
@@ -40,13 +41,8 @@ public class Dbs {
                     "    role int\n" +
                     ")ENGINE=InnoDB , auto_increment= 100000;");
 
-            //学生测试账号
-            DbOperators.execute("insert into users(id , username , password , role) value(1 , 'stu' , '123456' , 0);");
-            //教师测试账号
-            DbOperators.execute("insert into users(id , username , password , role) value(2 , 'tea' , '123456' , 1);");
-            //默认管理员
-            DbOperators.execute("insert into users(id , username , password , role) value(3 , 'root' , '123456' , 2);");
 
+            //用户信息表
             DbOperators.execute("create table if not exists UsersInformation(\n" +
                     "    id int ,\n" +
                     "    name varchar(20),\n" +
@@ -57,10 +53,42 @@ public class Dbs {
                     "    tutor varchar(20),\n" +
                     "    foreign key (id) references users(id) on delete cascade \n" +
                     ")ENGINE=InnoDB;");
+            try {
+                //学生测试账号
+                DbOperators.execute("insert into users(id , username , password , role) value(1 , 'stu' , '123456' , 0);");
+                //教师测试账号
+                DbOperators.execute("insert into users(id , username , password , role) value(2 , 'tea' , '123456' , 1);");
+                //默认管理员
+                DbOperators.execute("insert into users(id , username , password , role) value(3 , 'root' , '123456' , 2);");
+                DbOperators.execute("insert into usersinformation(id) value(1);");
+                DbOperators.execute("insert into usersinformation(id) value(2);");
+                DbOperators.execute("insert into usersinformation(id) value(3);");
+            } catch (Exception e) {
+                System.out.println("已插入初始角色");
+            }
 
-        }
-        catch (Exception e)
-        {
+            //主申请信息
+            DbOperators.execute("create table if not exists CreditRequestMain(\n" +
+                    "    requestId int primary key auto_increment,\n" +
+                    "    tutor varchar(20) ,\n" +
+                    "    file longblob,\n" +
+                    "    dates date,\n" +
+                    "    total double,\n" +
+                    "    id int ,\n" +
+                    "    foreign key (id) references users(id) on delete cascade\n" +
+                    ")ENGINE=InnoDB;");
+
+            //申请细节
+            DbOperators.execute("create table if not exists CreditRequestDetails(\n" +
+                    "    types varchar(20) ,\n" +
+                    "    project varchar(20) ,\n" +
+                    "    content varchar(20) ,\n" +
+                    "    score varchar(20),\n" +
+                    "    requestId int ,\n" +
+                    "    foreign key (requestId) references CreditRequestMain(requestId) on delete cascade\n" +
+                    ")ENGINE=InnoDB;");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

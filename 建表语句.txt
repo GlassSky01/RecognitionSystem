@@ -11,6 +11,8 @@ create table if not exists Users(
 insert into users(id , username , password , role) value(1 , 'stu' , '123456' , 0);
 insert into users(id , username , password , role) value(2 , 'tea' , '123456' , 1);
 insert into users(id , username , password , role) value(3 , 'root' , '123456' , 2);
+
+
 create table if not exists UsersInformation(
     id int ,
     name varchar(20),
@@ -22,3 +24,22 @@ create table if not exists UsersInformation(
     foreign key (id) references users(id)
 )ENGINE=InnoDB;
 
+create table if not exists CreditRequestMain(
+    requestId int primary key auto_increment,
+    tutor varchar(20) ,
+    file longblob,
+    dates date,
+    total double,
+    id int ,
+    foreign key (id) references users(id) on delete cascade
+)ENGINE=InnoDB;
+
+
+create table if not exists CreditRequestDetails(
+    types varchar(20) ,
+    project varchar(20) ,
+    content varchar(20) ,
+    score varchar(20),
+    requestId int ,
+    foreign key (requestId) references CreditRequestMain(requestId) on delete cascade
+)ENGINE=InnoDB;

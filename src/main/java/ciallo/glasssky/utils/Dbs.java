@@ -45,12 +45,14 @@ public class Dbs {
             //用户信息表
             DbOperators.execute("create table if not exists UsersInformation(\n" +
                     "    id int ,\n" +
-                    "    name varchar(20),\n" +
-                    "    phoneNumber varchar(20),\n" +
-                    "    email varchar(20),\n" +
-                    "    professional varchar(20),\n" +
-                    "    class int ,\n" +
+                    "    name varchar(20) default '',\n" +
+                    "    phoneNumber varchar(20) default '',\n" +
+                    "    email varchar(20) default '',\n" +
+                    "    professional varchar(20) default '',\n" +
+                    "    class int default 0 ,\n" +
                     "    tutorId int,\n" +
+                    "    grade int default 0 ,\n" +
+                    "    academy varchar(20) default '',\n" +
                     "    foreign key (id) references users(id ) on delete cascade,\n" +
                     "    foreign key (tutorId) references users(id ) on delete cascade\n" +
                     ")ENGINE=InnoDB;");
@@ -61,7 +63,7 @@ public class Dbs {
                 DbOperators.execute("insert into users(id , username , password , role) value(2 , 'tea' , '123456' , 1);");
                 //默认管理员
                 DbOperators.execute("insert into users(id , username , password , role) value(3 , 'root' , '123456' , 2);");
-                DbOperators.execute("insert into usersinformation(id , tutorId , name) value(1 , 2 , 'student');");
+                DbOperators.execute("insert into usersinformation(id , tutorId , name , grade , academy) value(1 , 2 , 'student' , 1 , '软件学院' );");
                 DbOperators.execute("insert into usersinformation(id , name ) value(2 , 'teacher');");
                 DbOperators.execute("insert into usersinformation(id , name ) value(3 , 'root');");
             } catch (Exception e) {

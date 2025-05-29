@@ -44,7 +44,7 @@ public class PersonalInfo extends JPanel {
         dx = w / 50;
         dy = h / 50;
         padx = dx * 3;
-        pady = dy * 3;
+        pady = dy ;
 
         setPublic();
         setPrivate();

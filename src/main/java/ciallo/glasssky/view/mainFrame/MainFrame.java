@@ -37,6 +37,7 @@ public class MainFrame extends JFrame {
 
     private void setProperties() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("创新学分认证系统");
         w = (int) (UIUnit.getW() * 3 / 4);
         h = (int) (UIUnit.getH() * 3 / 4);
         int x = (int) ((UIUnit.getW() - w) / 2);

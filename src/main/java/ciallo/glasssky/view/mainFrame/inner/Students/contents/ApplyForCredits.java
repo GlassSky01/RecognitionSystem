@@ -395,7 +395,7 @@ public class ApplyForCredits extends JPanel {
         jd.add(panel , BorderLayout.SOUTH);
 
         remove.addActionListener(e->{
-            if(JOptionPane.showConfirmDialog(jd , "是否删除所有选中申请?" , "删除确认" , JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+            if(JOptionPane.showConfirmDialog(jd , "是否撤销所有选中申请?" , "删除确认" , JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
                 return;
 
             System.out.println("已删除");

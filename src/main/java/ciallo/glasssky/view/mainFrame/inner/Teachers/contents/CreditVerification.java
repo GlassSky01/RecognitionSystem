@@ -27,14 +27,14 @@ public class CreditVerification  extends JPanel {
 
     JTable table ;
     JTextField nameFilter = new JTextField();
-    JComboBox<String> gradeFilter = new JComboBox<>();
+    JComboBox<String> gradeFilter = new JComboBox<>(new String[]{"全部" , "1" , "2" , "3" , "4"});
     JComboBox<String> academyFilter = new JComboBox<>();
     JTextField usernameFilter = new JTextField();
     JTextField dateFilter = new JTextField();
 
     private void setContents(int w,  int h){
         Font fontTitle = UIUnit.getFont(h , 10);
-        JLabel title = new JLabel("学分审核");
+        JLabel title = new JLabel("学分审核" , SwingConstants.CENTER);
         title.setFont(fontTitle);
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -62,42 +62,46 @@ public class CreditVerification  extends JPanel {
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setReorderingAllowed(false);
 
-        Font font = UIUnit.getFont(h , 20);
+        Font font = UIUnit.getFont(h , 40);
         table.setRowHeight((int) (font.getSize() *1.5));
 
+
+        JLabel tmpLabel1 = new JLabel();
+        JLabel tmpLabel2 = new JLabel();
         UIUnit.setFont(font , nameFilter , gradeFilter , academyFilter , usernameFilter , dateFilter ,
                 tableHeader , table , confirmFilter);
-
+        UIUnit.clearSize(nameFilter , gradeFilter , academyFilter , usernameFilter , dateFilter , tmpLabel1 , tmpLabel2);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
 
         gbc.insets.set(pady , padx , 0 , 0);
-        Lays.add(panel , nameFilter , gbc ,
+        Lays.add(panel , tmpLabel1 , gbc ,
                 0 , 0 , 1 , 1 , 1 , 0);
-        gbc.insets.set(pady , dx , 0 , 0);
+
+        gbc.insets.set(pady , 0 , 0 , 0);
+        Lays.add(panel , nameFilter , gbc ,
+                1 , 0 , 1 , 1 , 1 , 0);
         Lays.add(panel , gradeFilter , gbc  ,
-                1 , 0 , 1 , 1 , 0 , 0);
+                2 , 0 , 1 , 1 , 1 , 0);
         Lays.add(panel , academyFilter , gbc  ,
-                2 , 0 , 1 , 1 , 0 , 0);
-        Lays.add(panel , usernameFilter , gbc  ,
                 3 , 0 , 1 , 1 , 1 , 0);
-        Lays.add(panel , dateFilter , gbc  ,
+        Lays.add(panel , usernameFilter , gbc  ,
                 4 , 0 , 1 , 1 , 1 , 0);
+        Lays.add(panel , dateFilter , gbc  ,
+                5 , 0 , 1 , 1 , 1 , 0);
 
-        gbc.insets.set(dy , padx , 0 , 0);
+        gbc.insets.set(pady , 0 , 0 , padx);
+        Lays.add(panel,tmpLabel2, gbc ,
+                6,  0 , 1 , 1 , 2 , 0);
+        gbc.insets.set(dy , padx , 0 , padx);
         Lays.add(panel , new JScrollPane(table) , gbc  ,
-                0 , 1 , 7 , 5 , 1 , 1);
+                0 , 1 , 8 , 5 , 1 , 1);
 
-        gbc.insets.set(dy , 0 , 0 ,  0);
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.insets.set(dy , 0 , pady ,  0);
         Lays.add(panel ,  confirmFilter , gbc  ,
-                0 , 6 , 7 , 1);
-
-
-
-
-
-
+                0 , 6 , 8 , 1);
 
 
         confirmFilter.addActionListener(e->{
@@ -113,12 +117,15 @@ public class CreditVerification  extends JPanel {
 
     public void init(){
         nameFilter.setText("");
-        gradeFilter.removeAllItems();
-        gradeFilter.addItem("全部");
+
         academyFilter.removeAllItems();
         academyFilter.addItem("全部");
+
         usernameFilter.setText("");
         dateFilter.setText("");
+
+
+
 
         filter();
 
@@ -136,5 +143,6 @@ public class CreditVerification  extends JPanel {
             model.addRow(objects);
 
     }
+
 
 }

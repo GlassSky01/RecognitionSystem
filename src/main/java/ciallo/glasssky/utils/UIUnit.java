@@ -45,4 +45,10 @@ public class UIUnit {
     public static DefaultListCellRenderer getCenter(){
         return center;
     }
+
+    public static void clearSize(Component... components){
+        for(Component component : components)
+            component.setPreferredSize(new Dimension(0 , (int) component.getPreferredSize().getHeight()));
+    }
+
 }

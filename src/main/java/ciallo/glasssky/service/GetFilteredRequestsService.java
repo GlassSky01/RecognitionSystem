@@ -12,17 +12,20 @@ public class GetFilteredRequestsService {
         if(grade == "全部")
             grade = "";
         else
-            grade = "and grade = " + grade;
+            grade = " and i.grade = " + grade;
         if(academy == "全部")
             academy = "";
         else
-            academy = "and academy = " + academy;
+            academy = " and academy = " + academy;
         username = "%" + username + "%";
         dates = "%" + dates + "%";
 
-        String sql = "select requestId , name , grade , academy , username , dates from creditrequestmain natural join UsersInformation natural join users where  \n" +
-                "name like ? " + grade + academy + "and id like ? and dates like ?;";
-
+        String sql = "select requestId , name , i.grade , academy , username , dates from users u natural join UsersInformation i join creditrequestmain c on u.id = c.id  \n" +
+                "where name like ? " + grade + academy + " and username like ? and dates like ?;";
+        System.out.println(sql);
+        System.out.println(name);
+        System.out.println(username);
+        System.out.println(dates);
         return GetFilteredRequestsDao.get(sql , name , username , dates);
 
     }

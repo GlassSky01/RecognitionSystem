@@ -1,5 +1,6 @@
 package ciallo.glasssky.view.mainFrame.inner.Teachers.contents;
 
+import ciallo.glasssky.controller.GetDetailsController;
 import ciallo.glasssky.controller.GetFilteredRequestsController;
 import ciallo.glasssky.controller.GetFilteredRequestsController;
 import ciallo.glasssky.model.Result;
@@ -7,12 +8,13 @@ import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.UIUnit;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import static ciallo.glasssky.controller.GetFilteredRequestsController.*;
 
@@ -46,7 +48,7 @@ public class CreditVerification  extends JPanel {
 
 
         DefaultTableModel model = new DefaultTableModel(new Object[][]{} ,
-                new String[]{"申请id" , "姓名" , "年级" , "学院" , "学号" ,"申请日期" , "申请学分" , ""});
+                new String[]{"申请id" , "姓名" , "年级" , "学院" , "学号" ,"申请日期" , "申请学分" , "点击查看"});
 
         table = new JTable(model){
             @Override
@@ -57,19 +59,30 @@ public class CreditVerification  extends JPanel {
             }
         };
 
-        JButton confirmFilter = new JButton("筛选");
 
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setReorderingAllowed(false);
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(7).setCellRenderer(renderer);
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(table.columnAtPoint(e.getPoint()) == 7)
+                {
+                    showDetails((Integer) table.getValueAt(table.rowAtPoint(e.getPoint()) , 0));
+                }
+            }
+        });
 
         Font font = UIUnit.getFont(h , 40);
         table.setRowHeight((int) (font.getSize() *1.5));
 
 
-        JLabel tmpLabel1 = new JLabel();
+        JLabel tmpLabel1 = new JLabel("筛选条件:" , SwingConstants.CENTER);
         JLabel tmpLabel2 = new JLabel();
         UIUnit.setFont(font , nameFilter , gradeFilter , academyFilter , usernameFilter , dateFilter ,
-                tableHeader , table , confirmFilter);
+                tableHeader , table, tmpLabel1);
         UIUnit.clearSize(nameFilter , gradeFilter , academyFilter , usernameFilter , dateFilter , tmpLabel1 , tmpLabel2);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -94,19 +107,31 @@ public class CreditVerification  extends JPanel {
         gbc.insets.set(pady , 0 , 0 , padx);
         Lays.add(panel,tmpLabel2, gbc ,
                 6,  0 , 1 , 1 , 2 , 0);
-        gbc.insets.set(dy , padx , 0 , padx);
+        gbc.insets.set(dy , padx , pady , padx);
         Lays.add(panel , new JScrollPane(table) , gbc  ,
                 0 , 1 , 8 , 5 , 1 , 1);
 
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets.set(dy , 0 , pady ,  0);
-        Lays.add(panel ,  confirmFilter , gbc  ,
-                0 , 6 , 8 , 1);
 
 
-        confirmFilter.addActionListener(e->{
-            filter();
-        });
+        KeyAdapter keyAdapter = new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                filter();
+            }
+        };
+        ItemListener itemListener = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED)
+                    filter();
+            }
+        };
+        nameFilter.addKeyListener(keyAdapter);
+        usernameFilter.addKeyListener(keyAdapter);
+        dateFilter.addKeyListener(keyAdapter);
+        gradeFilter.addItemListener(itemListener);
+        academyFilter.addItemListener(itemListener);
 
 
 
@@ -134,15 +159,61 @@ public class CreditVerification  extends JPanel {
     private void filter(){
         Result result = GetFilteredRequestsController.get(nameFilter.getText() , (String) gradeFilter.getSelectedItem(), (String) academyFilter.getSelectedItem(),
                 usernameFilter.getText() , dateFilter.getText());
-        System.out.println(result.code);
         if(result.code == 0)
             return;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        for(Object[] objects : (ArrayList<Object[]>) result.content)
-            model.addRow(objects);
+        ArrayList<Object[]> arr = (ArrayList<Object[]>) result.content;
+        for(Object[] objects : arr){
+            model.addRow(objects );
+            model.setValueAt("查看详情" , model.getRowCount() - 1 , 7);
+        }
+
+
 
     }
 
+    private JDialog jd = null;
+    private void showDetails(int requestId){
+        if(jd != null){
+            jd.dispose();
+        }
+        JFrame frame = Lays.getFrame(this );
+        jd = new JDialog(frame, "申请详情" , false);
+        jd.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        int w = frame.getWidth() /2;
+        int h = frame.getHeight() / 2;
+        int x = (int) ((UIUnit.getW() - w) / 2);
+        int y = (int) ((UIUnit.getH() - h) / 2);
+
+        Result result = GetDetailsController.get(requestId);
+        if(result.code == 0)
+        {
+            System.out.println("查询失败");
+        }
+        else
+        {
+            ArrayList<Object[]> arr = (ArrayList<Object[]>) result.content;
+            DefaultTableModel model = new DefaultTableModel(new Object[][]{} ,
+                    new String[]{"序号" , "认证类型" , "认定项目" , "认定内容" , "申请学分" , "认定学分"});
+            JTable table = new JTable(model){
+                @Override
+                public boolean isCellEditable(int row , int column){
+                    return column == 5;
+                }
+            };
+            for(Object[] objects : arr)
+                model.addRow(objects);
+            gbc.insets.set(h / 50 , w / 50 , h / 50 , w / 50);
+            gbc.fill = GridBagConstraints.BOTH;
+            Lays.add(jd , new JScrollPane(table) , gbc ,
+                    0 , 0 , 1 , 1 , 1 , 1);
+
+        }
+
+        jd.setBounds(x , y , w , h);
+        jd.setVisible(true);
+    }
 
 }

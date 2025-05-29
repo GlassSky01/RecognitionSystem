@@ -20,12 +20,8 @@ public class GetFilteredRequestsService {
         username = "%" + username + "%";
         dates = "%" + dates + "%";
 
-        String sql = "select requestId , name , i.grade , academy , username , dates from users u natural join UsersInformation i join creditrequestmain c on u.id = c.id  \n" +
+        String sql = "select requestId , name , i.grade , academy , username , dates , total from users u natural join UsersInformation i join creditrequestmain c on u.id = c.id  \n" +
                 "where name like ? " + grade + academy + " and username like ? and dates like ?;";
-        System.out.println(sql);
-        System.out.println(name);
-        System.out.println(username);
-        System.out.println(dates);
         return GetFilteredRequestsDao.get(sql , name , username , dates);
 
     }

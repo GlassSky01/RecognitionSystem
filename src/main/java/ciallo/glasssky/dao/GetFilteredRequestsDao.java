@@ -10,10 +10,9 @@ public class GetFilteredRequestsDao {
     public static Result get(String sql, String name, String username, String dates) {
         ArrayList<Object[]> arr ;
         try {
-            arr = DbOperators.executeQuery(sql , new Class[]{Integer.class , String.class , Integer.class , String.class , String.class , String.class} ,
+            arr = DbOperators.executeQuery(sql , new Class[]{Integer.class , String.class , Integer.class , String.class , String.class , String.class , Double.class} ,
                     name , username , dates);
         } catch (Exception e) {
-            System.out.println("查询失败");
             return Result.failure();
         }
         return Result.success(arr);

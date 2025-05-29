@@ -295,7 +295,8 @@ public class ApplyForCredits extends JPanel {
             for(int i = 0 ; i< table.getRowCount() ; i ++)
             {
                 try {
-                    DbOperators.execute("insert into CreditRequestDetails(types, project, content, score, requestId) value(? , ? , ? , ? , ?);",
+                    DbOperators.execute("insert into CreditRequestDetails(detailsId , types, project, content, score, requestId) value( ? , ? , ? , ? , ? , ?);",
+                            i + 1,
                             model.getValueAt(i , 0) ,
                             model.getValueAt(i , 1) ,
                             model.getValueAt(i , 2) ,
@@ -370,7 +371,7 @@ public class ApplyForCredits extends JPanel {
         tableHeader.setReorderingAllowed(false);
 
         UIUnit.setFont(font , tableHeader , mainTable);
-        mainTable.setRowHeight((int) (font.getSize() * 1.2));
+        mainTable.setRowHeight((int) (font.getSize() * 1.5));
 
         JScrollPane pane = new JScrollPane(mainTable);
         jd.add(pane , BorderLayout.CENTER);
@@ -413,13 +414,15 @@ public class ApplyForCredits extends JPanel {
         });
 
         check.addActionListener(e->{
+            int row = mainTable.getSelectedRow();
+            if(row == -1)
+                return;
             JDialog detail = new JDialog(jd , "详情" , false);
             int w1 = w * 3 / 4;
             int h1  = h * 9 / 10;
             int x0 = (int) ((UIUnit.getW() - w1) / 2);
             int y0 = (int) ((UIUnit.getH() - h1) / 2);
             detail.setBounds(x0 , y0 , w1 , h1);
-            int row = mainTable.getSelectedRow();
             int requestId = (int) model.getValueAt(  row , 0);
             Result result1 = StudentDetailsQueryController.query(requestId);
 
@@ -429,6 +432,15 @@ public class ApplyForCredits extends JPanel {
             }
             else{
                 ArrayList<Object[]> arr1 = (ArrayList<Object[]>) result1.content;
+                String adviceText = null;
+                try {
+                     adviceText = (String) DbOperators.executeQuery("select auditAdvice from creditrequestmain where requestId = ?; ",
+                            new Class[]{String.class} , requestId).get(0)[0];
+                } catch (Exception ex) {
+                    System.out.println("意见查询失败");
+                }
+                if(adviceText == null)
+                    adviceText = "";
                 Object[][] data = new Object[arr1.size()][];
                 for(int i = 0 ; i< data.length ; i ++)
                 {
@@ -438,7 +450,41 @@ public class ApplyForCredits extends JPanel {
                     }
                     data[i] = arr1.get(i);
                 }
-                JTable detailsTable = new JTable(data , new String[]{});
+                JTable detailsTable = new JTable(data , new String[]{"序号" , "申请类型" , "申请项目" , "申请内容" , "申请分数" , "获得分数"}){
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                detail.setLayout(new GridBagLayout());
+                GridBagConstraints gbc = new GridBagConstraints();
+                Font font1 = UIUnit.getFont(h1 , 20);
+                JTableHeader tableHeader1 = detailsTable.getTableHeader();
+                detailsTable.setRowHeight((int) (font1.getSize() * 1.5));
+                tableHeader1.setReorderingAllowed(false);
+
+                Font innerFontTitle = UIUnit.getFont(h1 , 15);
+                JLabel innerTitle = new JLabel("审核意见:");
+
+                JTextArea advice = new JTextArea(adviceText);
+                advice.setEditable(false);
+
+                JScrollPane pane1 = new JScrollPane(detailsTable);
+                JScrollPane pane2 = new JScrollPane(advice);
+
+                innerTitle.setFont(innerFontTitle);
+                UIUnit.setFont(font1 , tableHeader1 , detailsTable , advice);
+
+
+                gbc.fill = GridBagConstraints.BOTH;
+                Lays.add(detail , pane1 , gbc,
+                        0 , 0 , 1 , 5 , 1 , 1);
+                Lays.add(detail , innerTitle , gbc,
+                        0 , 5 , 1 , 1 , 1 , 0);
+                Lays.add(detail , pane2 , gbc,
+                        0 , 6 , 1 , 5 , 1 , 1);
+
+
             }
 
             detail.setVisible(true);

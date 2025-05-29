@@ -87,7 +87,7 @@ public class Dbs {
 
             //申请细节
             DbOperators.execute("create table if not exists CreditRequestDetails(\n" +
-                    "    detailsId int primary key auto_increment,\n" +
+                    "    detailsId int ,\n" +
                     "    types varchar(20) ,\n" +
                     "    project varchar(20) ,\n" +
                     "    content varchar(20) ,\n" +

@@ -29,6 +29,7 @@ create table if not exists CreditRequestMain(
     requestId int primary key auto_increment,
     tutorId int ,
     file longblob,
+    fileName varchar(100),
     dates date,
     total double,
     id int ,
@@ -43,7 +44,7 @@ create table if not exists CreditRequestMain(
 
 
 create table if not exists CreditRequestDetails(
-    detailsId int primary key auto_increment,
+    detailsId int ,
     types varchar(20) ,
     project varchar(20) ,
     content varchar(20) ,

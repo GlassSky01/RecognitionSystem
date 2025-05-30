@@ -32,13 +32,9 @@ public class Lays {
         add(a , b , gbc , x , y , w , h);
     }
 
-    public static JLabel getRowLabel(){
+    public static JLabel getEmptyLabel(){
         JLabel label = new JLabel();
         UIUnit.clearWidth(label);
-        return label;
-    }
-    public static JLabel getColumnLabel(){
-        JLabel label = new JLabel();
         UIUnit.clearHeight(label);
         return label;
     }

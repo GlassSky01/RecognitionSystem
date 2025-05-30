@@ -290,8 +290,8 @@ public class CreditVerification extends JPanel {
                     while ((len = is.read(bytes)) != -1) {
                         os.write(bytes, 0, len);
                     }
+                    JOptionPane.showConfirmDialog(Lays.getFrame(this), "下载成功", "success", JOptionPane.DEFAULT_OPTION);
                 }
-                JOptionPane.showConfirmDialog(Lays.getFrame(this), "下载成功", "success", JOptionPane.DEFAULT_OPTION);
 
             } catch (Exception ee) {
                 JOptionPane.showConfirmDialog(Lays.getFrame(this), "读取失败", "warning", JOptionPane.DEFAULT_OPTION);

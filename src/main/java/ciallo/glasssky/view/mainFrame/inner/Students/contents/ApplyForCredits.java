@@ -71,6 +71,8 @@ public class ApplyForCredits extends JPanel {
 //            model.addRow(new Object[]{"内容" , "内容" , "内容" , "内容" });
 
         JTable table = new JTable(model);
+        for(int i = 0 ; i < table.getColumnCount() ; i ++)
+            table.getColumnModel().getColumn(i).setCellRenderer(UIUnit.getTableCenter());
         JScrollPane pane = new JScrollPane(table);
 
         JLabel label1 = new JLabel("导师:");
@@ -366,7 +368,8 @@ public class ApplyForCredits extends JPanel {
             }
         };
         JTable mainTable = new JTable(model);
-
+        for(int i = 0 ; i < mainTable.getColumnCount() ; i ++)
+            mainTable.getColumnModel().getColumn(i).setCellRenderer(UIUnit.getTableCenter());
         Font font = UIUnit.getFont(h , 30);
         JTableHeader tableHeader = mainTable.getTableHeader();
         tableHeader.setReorderingAllowed(false);
@@ -397,21 +400,24 @@ public class ApplyForCredits extends JPanel {
         jd.add(panel , BorderLayout.SOUTH);
 
         remove.addActionListener(e->{
-            if(JOptionPane.showConfirmDialog(jd , "是否撤销所有选中申请?" , "删除确认" , JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+            if(JOptionPane.showConfirmDialog(jd , "<html>是否撤销所有选中申请?<br>只能撤销未被审核的申请</html>" , "删除确认" , JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
                 return;
 
-            System.out.println("已删除");
             int[] rows = mainTable.getSelectedRows();
             for(int i = rows.length - 1 ; i >= 0 ; i --) {
                 int row =rows[i];
+                if(mainTable.getValueAt(row , 6).equals("已审核"))
+                    continue;
                 try {
-                    DbOperators.execute("delete from CreditRequestMain where requestId = ?;",
+                    DbOperators.execute("delete from CreditRequestMain where requestId = ?  ;",
                             model.getValueAt(row, 0));
+
                     model.removeRow(row);
                 } catch (Exception ex) {
-                    System.out.println("第" + (row+ 1) + "行删除失败");
+                    System.out.println("第" + (row+ 1) + "行撤销失败");
                 }
             }
+            JOptionPane.showConfirmDialog(jd , "已撤销所有未被审核的申请" , "success" , JOptionPane.DEFAULT_OPTION);
         });
 
         check.addActionListener(e->{
@@ -451,12 +457,14 @@ public class ApplyForCredits extends JPanel {
                     }
                     data[i] = arr1.get(i);
                 }
-                JTable detailsTable = new JTable(data , new String[]{"序号" , "申请类型" , "申请项目" , "申请内容" , "申请分数" , "获得分数"}){
+                JTable detailsTable = new JTable(data , new String[]{"序号" , "认证类型" , "认定项目" , "认定内容" , "申请学分" , "获得学分"}){
                     @Override
                     public boolean isCellEditable(int row, int column) {
                         return false;
                     }
                 };
+                for(int i = 0 ; i < detailsTable.getColumnCount() ; i ++)
+                    detailsTable.getColumnModel().getColumn(i).setCellRenderer(UIUnit.getTableCenter());
                 detail.setLayout(new GridBagLayout());
                 GridBagConstraints gbc = new GridBagConstraints();
                 Font font1 = UIUnit.getFont(h1 , 20);

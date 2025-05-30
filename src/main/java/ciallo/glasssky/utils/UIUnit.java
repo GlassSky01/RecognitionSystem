@@ -1,6 +1,7 @@
 package ciallo.glasssky.utils;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
 public class UIUnit {
@@ -9,6 +10,11 @@ public class UIUnit {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         W = dimension.getWidth();
         H = dimension.getHeight();
+    }
+
+    private static DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+    static {
+        renderer.setHorizontalAlignment(JLabel.CENTER);
     }
 
     private static final DefaultListCellRenderer center = new DefaultListCellRenderer() {
@@ -42,13 +48,19 @@ public class UIUnit {
             }
         }
     }
-    public static DefaultListCellRenderer getCenter(){
+    public static DefaultListCellRenderer getComboCenter(){
         return center;
     }
 
-    public static void clearSize(Component... components){
+    public static void clearWidth(Component... components){
         for(Component component : components)
             component.setPreferredSize(new Dimension(0 , (int) component.getPreferredSize().getHeight()));
     }
-
+    public static void clearHeight(Component... components){
+        for(Component component : components)
+            component.setPreferredSize(new Dimension((int) component.getPreferredSize().getWidth(), 0));
+    }
+    public static DefaultTableCellRenderer getTableCenter(){
+        return renderer;
+    }
 }

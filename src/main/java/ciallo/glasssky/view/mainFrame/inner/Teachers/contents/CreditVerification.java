@@ -2,7 +2,6 @@ package ciallo.glasssky.view.mainFrame.inner.Teachers.contents;
 
 import ciallo.glasssky.controller.GetDetailsController;
 import ciallo.glasssky.controller.GetFilteredRequestsController;
-import ciallo.glasssky.controller.GetFilteredRequestsController;
 import ciallo.glasssky.model.Result;
 import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.UIUnit;
@@ -14,9 +13,6 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Collection;
-
-import static ciallo.glasssky.controller.GetFilteredRequestsController.*;
 
 public class CreditVerification  extends JPanel {
     public CreditVerification(int w, int h) {
@@ -48,13 +44,11 @@ public class CreditVerification  extends JPanel {
 
 
         DefaultTableModel model = new DefaultTableModel(new Object[][]{} ,
-                new String[]{"申请id" , "姓名" , "年级" , "学院" , "学号" ,"申请日期" , "申请学分" , "点击查看"});
+                new String[]{"申请id" , "姓名" , "年级" , "学院" , "学号" ,"申请日期" , "申请学分" , "审核"});
 
         table = new JTable(model){
             @Override
             public boolean isCellEditable(int row, int column){
-                if(column == 5)
-                    return true;
                 return false;
             }
         };
@@ -62,9 +56,8 @@ public class CreditVerification  extends JPanel {
 
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setReorderingAllowed(false);
-        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-        renderer.setHorizontalAlignment(JLabel.CENTER);
-        table.getColumnModel().getColumn(7).setCellRenderer(renderer);
+
+        table.getColumnModel().getColumn(7).setCellRenderer(UIUnit.getTableCenter());
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -83,7 +76,7 @@ public class CreditVerification  extends JPanel {
         JLabel tmpLabel2 = new JLabel();
         UIUnit.setFont(font , nameFilter , gradeFilter , academyFilter , usernameFilter , dateFilter ,
                 tableHeader , table, tmpLabel1);
-        UIUnit.clearSize(nameFilter , gradeFilter , academyFilter , usernameFilter , dateFilter , tmpLabel1 , tmpLabel2);
+        UIUnit.clearWidth(nameFilter , gradeFilter , academyFilter , usernameFilter , dateFilter , tmpLabel1 , tmpLabel2);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
@@ -166,7 +159,7 @@ public class CreditVerification  extends JPanel {
         ArrayList<Object[]> arr = (ArrayList<Object[]>) result.content;
         for(Object[] objects : arr){
             model.addRow(objects );
-            model.setValueAt("查看详情" , model.getRowCount() - 1 , 7);
+            model.setValueAt("查看详情" , model.getRowCount() - 1 , model.getColumnCount() - 1);
         }
 
 
@@ -179,11 +172,11 @@ public class CreditVerification  extends JPanel {
             jd.dispose();
         }
         JFrame frame = Lays.getFrame(this );
-        jd = new JDialog(frame, "申请详情" , false);
+        jd = new JDialog(frame, "点击审核" , false);
         jd.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        int w = frame.getWidth() /2;
-        int h = frame.getHeight() / 2;
+        int w = frame.getWidth() * 3 / 4;
+        int h = frame.getHeight() * 3 / 4;
         int x = (int) ((UIUnit.getW() - w) / 2);
         int y = (int) ((UIUnit.getH() - h) / 2);
 
@@ -195,20 +188,68 @@ public class CreditVerification  extends JPanel {
         else
         {
             ArrayList<Object[]> arr = (ArrayList<Object[]>) result.content;
-            DefaultTableModel model = new DefaultTableModel(new Object[][]{} ,
-                    new String[]{"序号" , "认证类型" , "认定项目" , "认定内容" , "申请学分" , "认定学分"});
-            JTable table = new JTable(model){
+
+            DefaultTableModel model = new DefaultTableModel( new Object[][]{},
+                    new String[]{"序号" , "认证类型" , "认定项目" , "认定内容" , "申请学分" , "认定学分"}){
                 @Override
                 public boolean isCellEditable(int row , int column){
                     return column == 5;
                 }
             };
-            for(Object[] objects : arr)
+
+            for(Object[] objects : arr){
                 model.addRow(objects);
-            gbc.insets.set(h / 50 , w / 50 , h / 50 , w / 50);
+                model.setValueAt("输入分数" , model.getRowCount() - 1 , model.getColumnCount() - 1);
+            }
+
+
+
+            int padx = w / 20;
+            int pady = h / 20;
+            int dx = padx / 3;
+            int dy = pady / 3;
+
+
+            JTable table = new JTable(model);
+            table.getColumnModel().getColumn(table.getColumnCount() - 1).setCellRenderer(UIUnit.getTableCenter());
+            JScrollPane tablePane = new JScrollPane(table);
+
+            JLabel label = new JLabel("审核意见");
+
+            JTextArea area = new JTextArea();
+            JScrollPane areaPane = new JScrollPane(area);
+
+            JButton confirm = new JButton("确认");
+
+            JTableHeader tableHeader = table.getTableHeader();
+
+
+
+            Font font = UIUnit.getFont(h , 30);
+
+            UIUnit.setFont(font , table , tableHeader , label , area , confirm);
+            table.setRowHeight((int) (font.getSize() * 1.5));
+
+            UIUnit.clearHeight(tablePane , label , areaPane , confirm);
+
             gbc.fill = GridBagConstraints.BOTH;
-            Lays.add(jd , new JScrollPane(table) , gbc ,
-                    0 , 0 , 1 , 1 , 1 , 1);
+
+            gbc.insets.set(pady , padx , 0 , padx);
+            Lays.add(jd ,  tablePane , gbc ,
+                    0 , 0 , 1 , 1 , 1 , 7);
+
+            gbc.insets.set(dy , padx , 0,  padx);
+            Lays.add(jd , label , gbc ,
+                    0 , 1 , 1 , 1 , 1 , 1 );
+            Lays.add(jd , areaPane , gbc ,
+                    0 , 2 , 1 , 1 , 1 , 5 );
+
+
+            gbc.fill = GridBagConstraints.VERTICAL;
+
+            gbc.insets.set(dy , padx , pady , padx);
+            Lays.add(jd , confirm , gbc ,
+                    0 , 3 , 1 , 1 , 1 , 1 );
 
         }
 

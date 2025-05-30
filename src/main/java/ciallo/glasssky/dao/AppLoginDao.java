@@ -7,7 +7,7 @@ import ciallo.glasssky.utils.DbOperators;
 import java.sql.Statement;
 
 public class AppLoginDao {
-    public Result login(User user) {
+    public static Result login(User user) {
         Object[] obj;
         try {
             obj = DbOperators.executeQuery(
@@ -15,7 +15,6 @@ public class AppLoginDao {
                     , new Class<?>[]{Integer.class , Integer.class}, user.username, user.password
             ).get(0);
         } catch (Exception e) {
-            e.printStackTrace();
             return Result.failure("账号或密码错误");
         }
         return Result.success(obj);

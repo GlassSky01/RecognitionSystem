@@ -1,8 +1,8 @@
 package ciallo.glasssky.view.mainFrame.inner.Students.contents;
 
-import ciallo.glasssky.controller.StudentDetailsQueryController;
-import ciallo.glasssky.controller.StudentRequestQueryController;
 import ciallo.glasssky.model.Result;
+import ciallo.glasssky.service.StudentDetailsQueryService;
+import ciallo.glasssky.service.StudentRequestQueryService;
 import ciallo.glasssky.utils.DbOperators;
 import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.LocalUser;
@@ -379,7 +379,7 @@ public class ApplyForCredits extends JPanel {
 
         JScrollPane pane = new JScrollPane(mainTable);
         jd.add(pane , BorderLayout.CENTER);
-        Result result = StudentRequestQueryController.query();
+        Result result = StudentRequestQueryService.query();
         if(result.code == 0){
             System.out.println("查询失败");
             jd.dispose();
@@ -431,7 +431,7 @@ public class ApplyForCredits extends JPanel {
             int y0 = (int) ((UIUnit.getH() - h1) / 2);
             detail.setBounds(x0 , y0 , w1 , h1);
             int requestId = (int) model.getValueAt(  row , 0);
-            Result result1 = StudentDetailsQueryController.query(requestId);
+            Result result1 = StudentDetailsQueryService.query(requestId);
 
             if(result1.code == 0 )
             {

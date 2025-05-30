@@ -1,7 +1,7 @@
 package ciallo.glasssky.view.login;
 
-import ciallo.glasssky.controller.DbLoginController;
 import ciallo.glasssky.model.Result;
+import ciallo.glasssky.service.DbLoginService;
 import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.UIUnit;
 
@@ -14,7 +14,6 @@ public class DbLogin extends JFrame {
     private AppLogin appLogin;
     private int w, h;
 
-    DbLoginController dbLoginController = new DbLoginController();
 
     public DbLogin() {
         setProperties();
@@ -117,7 +116,7 @@ public class DbLogin extends JFrame {
             if (password == null)
                 password = prop.getProperty("db.password");
 
-            result = dbLoginController.login(user, password);
+            result = DbLoginService.login(user, password);
             if (result.code == 1) {
                 this.setVisible(false);
                 appLogin.setVisible(true);

@@ -11,7 +11,7 @@ public class GetAllStudentRequestDao {
         ArrayList<Object[]> arr ;
         try {
             arr = DbOperators.executeQuery("select u.id,name , u.grade , u.academy , us.username  , sum(getTotal) , sum(total) , count(name) , sum(auditState = 0) \n" +
-                            "from users us natural join usersinformation u join creditrequestmain c where u.tutorId = ?\n" +
+                            "from users us natural join usersinformation u join creditrequestmain c where u.id = c.id and u.tutorId = ?\n" +
                             "group by u.id ,name, u.grade , u.academy , us.username;",
                     new Class[]{Integer.class , String.class ,Integer.class , String.class, String.class ,  Double.class , Double.class , Integer.class , Integer.class} ,
                     LocalUser.id);

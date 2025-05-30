@@ -1,9 +1,12 @@
 package ciallo.glasssky.view.mainFrame.inner.Administrators.contents;
 
-import ciallo.glasssky.controller.GetTeachersController;
-import ciallo.glasssky.controller.InsertTeacherController;
+import ciallo.glasssky.model.MyContainer;
 import ciallo.glasssky.model.Result;
+import ciallo.glasssky.service.GetTeachersService;
+import ciallo.glasssky.service.InsertTeacherService;
+import ciallo.glasssky.utils.DbOperators;
 import ciallo.glasssky.utils.Lays;
+import ciallo.glasssky.utils.MyInsets;
 import ciallo.glasssky.utils.UIUnit;
 
 import javax.swing.*;
@@ -28,12 +31,7 @@ public class TeacherInfo extends JPanel {
         JLabel title = new JLabel("学分申请", SwingConstants.CENTER);
         title.setFont(fontTitle);
 
-        int padx = w / 30;
-        int pady = h / 30;
-        int dx = padx / 5;
-        int dy = pady / 5;
         JPanel center = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
 
         DefaultTableModel model = new DefaultTableModel(new Object[][]{} ,
                 new String[]{ "账号" , "姓名" , "电话" , "邮箱" , "密码"}){
@@ -55,41 +53,46 @@ public class TeacherInfo extends JPanel {
         Font font = UIUnit.getFont(h, 30);
         UIUnit.setFont(font , table , tableHeader , name , phoneNumber , email , remove , add);
         table.setRowHeight((int) (font.getSize() * 1.5));
-        UIUnit.clearHeight(pane , name , phoneNumber , email , remove , add);
-        UIUnit.clearWidth(pane , name , phoneNumber , email , remove , add);
+        tableHeader.setReorderingAllowed(false);
 
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets.set(pady , padx , dy , padx);
-        Lays.add(center , pane , gbc ,
-                0 , 0 , 5 , 1 , 1 , 7);
+        MyInsets i = new MyInsets(w / 30 , h / 30 , 0 , h / 100);
+        MyContainer centerC = new MyContainer(center , i);
+        //第一行
+        centerC.add(pane ,
+                 0 , 0 , 5 , 1 , 1 , 7 ,"LRU" );
 
-        gbc.insets.set(dy , padx , dy , dx);
-        Lays.add(center , Lays.getEmptyLabel() , gbc ,
-                0 , 1 , 1 , 1 , 1 , 1);
-        gbc.insets.set(dy , dx , dy , dx);
-        Lays.add(center , name , gbc ,
-                1 , 1 , 1 , 1 , 1 , 1);
-        Lays.add(center , phoneNumber , gbc ,
-                2 , 1 , 1 , 1 , 1 , 1);
-        Lays.add(center , email , gbc ,
+        //第二行
+        centerC.add(Lays.getEmptyLabel() ,
+                0 , 1 , 1 , 1 , 1 , 1, "L" );
+
+        centerC.add(name ,
+                1 , 1 , 1 , 1 , 1 , 1 );
+
+        centerC.add(phoneNumber ,
+                2 , 1 , 1 , 1 , 1 , 1 );
+
+        centerC.add(email ,
                 3 , 1 , 1 , 1 , 1 , 1);
-        gbc.insets.set(dy , dx , dy , padx);
-        Lays.add(center , Lays.getEmptyLabel() , gbc ,
-                4 , 1 , 1 , 1 , 1 , 1);
 
-        gbc.insets.set(dy , padx , pady , dx);
-        Lays.add(center , Lays.getEmptyLabel() , gbc ,
-                0 , 2 , 1 , 1 , 1 , 1);
-        gbc.insets.set(dy , dx , pady , dx);
-        Lays.add(center , remove , gbc ,
-                1 , 2 , 1 , 1 , 1 , 1);
-        Lays.add(center , Lays.getEmptyLabel() , gbc ,
-                2 , 2 , 1 , 1 , 1 , 1);
-        Lays.add(center , add , gbc ,
-                3 , 2 , 1 , 1 , 1 , 1);
-        gbc.insets.set(dy , dx , pady , padx);
-        Lays.add(center , Lays.getEmptyLabel() , gbc ,
-                4 , 2 , 1 , 1 , 1 , 1);
+        centerC.add(Lays.getEmptyLabel() ,
+                4 , 1 , 1 , 1 , 1 , 1, "R" );
+
+        i.setDx(w / 100);
+        //第三行
+        centerC.add(Lays.getEmptyLabel() ,
+                0 , 2 , 1 , 1 , 1 , 1 , "LD");
+
+        centerC.add(remove ,
+                1 , 2 , 1 , 1 , 1 , 1 , "D");
+
+        centerC.add(Lays.getEmptyLabel() ,
+                2 , 2 , 1 , 1 , 1 , 1, "D");
+
+        centerC.add(add ,
+                3 , 2 , 1 , 1 , 1 , 1, "D");
+
+        centerC.add(Lays.getEmptyLabel() ,
+                4 , 2 , 1 , 1 , 1 , 1, "RD");
 
         addRemove(remove);
         addAdd(add , name , phoneNumber , email);
@@ -101,7 +104,7 @@ public class TeacherInfo extends JPanel {
     public void init(){
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        Result result = GetTeachersController.get();
+        Result result = GetTeachersService.get();
         if(result.code == 0)
         {
             model.addRow(new Object[]{"查询失败"});
@@ -114,17 +117,29 @@ public class TeacherInfo extends JPanel {
     }
     private void addRemove(JButton remove){
         remove.addActionListener(e->{
+            if(JOptionPane.showConfirmDialog(this , "是否删除所有选中教师?" , "确认" , JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+                return;
+
             int[] rows = table.getSelectedRows();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
             for(int i = rows.length - 1 ; i >= 0 ; i --)
             {
                 int row = rows[i];
-
+                String username = table.getValueAt(row , 0).toString();
+                try {
+                    DbOperators.execute("delete from users where username = ?;" , username);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+                model.removeRow(row);
             }
+
+            JOptionPane.showConfirmDialog(this,  "已删除" , "success" , JOptionPane.DEFAULT_OPTION);
         });
     }
     private void addAdd(JButton add, JTextField name, JTextField phoneNumber, JTextField email){
         add.addActionListener(e->{
-            Result result = InsertTeacherController.insert(name.getText() , phoneNumber.getText() , email.getText());
+            Result result = InsertTeacherService.insert(name.getText() , phoneNumber.getText() , email.getText());
             if(result.code == 0 )
                 JOptionPane.showConfirmDialog(this , result.info , "warning" , JOptionPane.DEFAULT_OPTION);
             init();

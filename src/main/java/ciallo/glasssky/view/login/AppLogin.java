@@ -1,8 +1,8 @@
 package ciallo.glasssky.view.login;
 
-import ciallo.glasssky.controller.AppLoginController;
 import ciallo.glasssky.model.Result;
 import ciallo.glasssky.model.User;
+import ciallo.glasssky.service.AppLoginService;
 import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.LocalUser;
 import ciallo.glasssky.utils.UIUnit;
@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AppLogin extends JFrame {
-    private AppLoginController appLoginController = new AppLoginController();
     private MainFrame mainFrame = new MainFrame(this);
     public AppLogin(DbLogin dbLogin, Font font1, Font font2){
         this.setProperties(dbLogin );
@@ -87,7 +86,7 @@ public class AppLogin extends JFrame {
     }
 
     private void login(JTextField user , JTextField password){
-        Result result = appLoginController.login(new User( user.getText() , password.getText()));
+        Result result = AppLoginService.login(new User( user.getText() , password.getText()));
         if(result.code == 1){
             this.setVisible(false);
             mainFrame.setVisible(true);

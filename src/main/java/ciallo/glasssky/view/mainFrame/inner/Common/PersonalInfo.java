@@ -1,9 +1,9 @@
 package ciallo.glasssky.view.mainFrame.inner.Common;
 
-import ciallo.glasssky.controller.GetPersonalInfoController;
-import ciallo.glasssky.controller.ResetPasswordController;
 import ciallo.glasssky.dao.SaveInfoDao;
 import ciallo.glasssky.model.Result;
+import ciallo.glasssky.service.GetPersonalInfoService;
+import ciallo.glasssky.service.ResetPasswordService;
 import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.LocalUser;
 import ciallo.glasssky.utils.UIUnit;
@@ -163,7 +163,7 @@ public class PersonalInfo extends JPanel {
 
 
         resetPassword.addActionListener(e -> {
-            Result result = ResetPasswordController.reset(oldPassword.getText(), newPassword.getText());
+            Result result = ResetPasswordService.reset(oldPassword.getText(), newPassword.getText());
             if (result.code == 0)
                 JOptionPane.showConfirmDialog(this, result.info, "warning", JOptionPane.DEFAULT_OPTION);
             else {
@@ -190,7 +190,7 @@ public class PersonalInfo extends JPanel {
         for(int i = 0 ; i < 2 ; i ++)
             jpfs[i].setText("");
         fields.get(0).setText(LocalUser.username);
-        Result result = GetPersonalInfoController.get(fieldsName, fieldsType);
+        Result result = GetPersonalInfoService.get(fieldsName, fieldsType);
         Object[] texts = (Object[]) result.content;
         for (int i = 0; i < texts.length; i++) {
             fields.get(i + 1).setText(texts[i].toString());

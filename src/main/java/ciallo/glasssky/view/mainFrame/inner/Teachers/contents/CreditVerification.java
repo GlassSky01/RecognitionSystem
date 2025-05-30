@@ -1,10 +1,10 @@
 package ciallo.glasssky.view.mainFrame.inner.Teachers.contents;
 
-import ciallo.glasssky.controller.DownloadFileController;
-import ciallo.glasssky.controller.GetDetailsController;
-import ciallo.glasssky.controller.GetFilteredRequestsController;
-import ciallo.glasssky.controller.VerificationConfirmController;
 import ciallo.glasssky.model.Result;
+import ciallo.glasssky.service.DownloadFileService;
+import ciallo.glasssky.service.GetDetailsService;
+import ciallo.glasssky.service.GetFilteredRequestsService;
+import ciallo.glasssky.service.VerificationConfirmService;
 import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.UIUnit;
 
@@ -151,7 +151,7 @@ public class CreditVerification extends JPanel {
     }
 
     private void filter() {
-        Result result = GetFilteredRequestsController.get(nameFilter.getText(), (String) gradeFilter.getSelectedItem(), (String) academyFilter.getSelectedItem(),
+        Result result = GetFilteredRequestsService.get(nameFilter.getText(), (String) gradeFilter.getSelectedItem(), (String) academyFilter.getSelectedItem(),
                 usernameFilter.getText(), dateFilter.getText() , " and c.auditState = 0;");
         if (result.code == 0)
             return;
@@ -181,7 +181,7 @@ public class CreditVerification extends JPanel {
         int x = (int) ((UIUnit.getW() - w) / 2);
         int y = (int) ((UIUnit.getH() - h) / 2);
 
-        Result result = GetDetailsController.get(requestId);
+        Result result = GetDetailsService.get(requestId);
         if (result.code == 0) {
             System.out.println("查询失败");
         } else {
@@ -268,7 +268,7 @@ public class CreditVerification extends JPanel {
 
     private void setDownload(JButton download, int requestId) {
         download.addActionListener(e -> {
-            Result result = DownloadFileController.download(requestId);
+            Result result = DownloadFileService.download(requestId);
             if (result.code == 0) {
                 JOptionPane.showConfirmDialog(Lays.getFrame(this), result.info, "warning", JOptionPane.DEFAULT_OPTION);
                 return;
@@ -302,7 +302,7 @@ public class CreditVerification extends JPanel {
 
     private void setConfirm(JButton confirm, JTable table, JTextArea area, int requestId) {
         confirm.addActionListener(e -> {
-            Result result = VerificationConfirmController.commit(table, area.getText(), requestId);
+            Result result = VerificationConfirmService.commit(table, area.getText(), requestId);
 
             if (result.code == 0) {
                 JOptionPane.showConfirmDialog(Lays.getFrame(this), result.info, "warning", JOptionPane.DEFAULT_OPTION);

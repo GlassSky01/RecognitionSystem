@@ -1,9 +1,9 @@
 package ciallo.glasssky.view.mainFrame.inner.Teachers.contents;
 
-import ciallo.glasssky.controller.CheckDetailsController;
-import ciallo.glasssky.controller.CheckStudentController;
-import ciallo.glasssky.controller.GetAllStudentRequestController;
 import ciallo.glasssky.model.Result;
+import ciallo.glasssky.service.CheckDetailsService;
+import ciallo.glasssky.service.CheckStudentService;
+import ciallo.glasssky.service.GetAllStudentRequestService;
 import ciallo.glasssky.utils.DbOperators;
 import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.UIUnit;
@@ -116,7 +116,7 @@ public class CheckDetails extends JPanel {
                 return false;
             }
         };
-        Result result = CheckStudentController.check(id);
+        Result result = CheckStudentService.check(id);
         if (result.code == 0)
             model.addRow(new Object[]{result.info});
         else {
@@ -137,7 +137,7 @@ public class CheckDetails extends JPanel {
 
 
         //布局
-        Font font = UIUnit.getFont(h, 30);
+        Font font = UIUnit.getFont(h, 35);
         UIUnit.setFont(font, studentTable, tableHeader);
         studentTable.setRowHeight((int) (font.getSize() * 1.5));
 
@@ -175,7 +175,7 @@ public class CheckDetails extends JPanel {
                 return false;
             }
         };
-        Result result = CheckDetailsController.check(requestId, state);
+        Result result = CheckDetailsService.check(requestId, state);
         String advice;
         try {
             advice = (String) DbOperators.executeQuery("select auditAdvice from CreditRequestMain where requestId = ?;",
@@ -246,7 +246,7 @@ public class CheckDetails extends JPanel {
     public void init() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        Result result = GetAllStudentRequestController.get();
+        Result result = GetAllStudentRequestService.get();
         if (result.code == 0) {
             model.addRow(new Object[]{result.info});
             return;

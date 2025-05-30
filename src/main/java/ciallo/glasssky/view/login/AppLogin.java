@@ -24,6 +24,7 @@ public class AppLogin extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("登录学分认证管理系统");
         this.setBounds(dbLogin.getBounds());
+        this.setAlwaysOnTop(true);
     }
     private void setContents(Font font1, Font font2) {
         this.setLayout(new GridBagLayout());
@@ -90,6 +91,7 @@ public class AppLogin extends JFrame {
         if(result.code == 1){
             this.setVisible(false);
             mainFrame.setVisible(true);
+            mainFrame.toFront();
             Object[] content = (Object[]) result.content;
             LocalUser.setInfo(user.getText() , password.getText() , content[0] , (Integer) (content[1]));
             user.setText("");

@@ -41,10 +41,10 @@ public class PersonalInfo extends JPanel {
         title.setFont(fontTitle);
 
         this.font = UIUnit.getFont(h, 30);
-        dx = w / 50;
-        dy = h / 50;
-        padx = dx * 3;
-        pady = dy ;
+        padx = w / 30;
+        pady = h / 30;
+        dx = padx / 3;
+        dy = pady / 3;
 
         setPublic();
         setPrivate();

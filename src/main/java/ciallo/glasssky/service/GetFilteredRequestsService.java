@@ -2,9 +2,10 @@ package ciallo.glasssky.service;
 
 import ciallo.glasssky.dao.GetFilteredRequestsDao;
 import ciallo.glasssky.model.Result;
+import ciallo.glasssky.utils.LocalUser;
 
 public class GetFilteredRequestsService {
-    public static Result get(String name, String grade, String academy, String username, String dates) {
+    public static Result get(String name, String grade, String academy, String username, String dates , String condition) {
         name = name.strip();
         username = username.strip();
         dates = dates.strip();
@@ -21,7 +22,7 @@ public class GetFilteredRequestsService {
         dates = "%" + dates + "%";
 
         String sql = "select requestId , name , i.grade , academy , username , dates , total from users u natural join UsersInformation i join creditrequestmain c on u.id = c.id  \n" +
-                "where name like ? " + grade + academy + " and username like ? and dates like ?;";
+                "where name like ? " + grade + academy + " and username like ? and dates like ? and i.tutorId = " + LocalUser.id + condition;
         return GetFilteredRequestsDao.get(sql , name , username , dates);
 
     }

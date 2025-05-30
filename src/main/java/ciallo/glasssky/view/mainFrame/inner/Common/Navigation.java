@@ -1,5 +1,6 @@
 package ciallo.glasssky.view.mainFrame.inner.Common;
 
+import ciallo.glasssky.utils.Lays;
 import ciallo.glasssky.utils.UIUnit;
 import ciallo.glasssky.view.mainFrame.MainFrame;
 
@@ -46,9 +47,10 @@ public class Navigation extends JPanel {
             });
         }
         exit.addActionListener(e->{
-            MainFrame mainFrame = (MainFrame) (this.getParent().getParent().getParent().getParent().getParent());
+            MainFrame mainFrame = (MainFrame) Lays.getFrame(this);
             mainFrame.setVisible(false);
-            mainFrame.getAppLogin().setVisible(true);
+            JFrame appLoin = mainFrame.getAppLogin();
+            appLoin.setVisible(true);
         });
     }
 

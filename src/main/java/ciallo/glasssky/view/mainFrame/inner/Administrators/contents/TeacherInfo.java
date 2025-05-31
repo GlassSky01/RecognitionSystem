@@ -28,7 +28,7 @@ public class TeacherInfo extends JPanel {
     JTable table ;
     private void setContents(int w, int h) {
         Font fontTitle = UIUnit.getFont(h, 10);
-        JLabel title = new JLabel("学分申请", SwingConstants.CENTER);
+        JLabel title = new JLabel("教师信息管理", SwingConstants.CENTER);
         title.setFont(fontTitle);
 
         JPanel center = new JPanel(new GridBagLayout());
@@ -82,13 +82,13 @@ public class TeacherInfo extends JPanel {
         centerC.add(Lays.getEmptyLabel() ,
                 0 , 2 , 1 , 1 , 1 , 1 , "LD");
 
-        centerC.add(remove ,
+        centerC.add(add ,
                 1 , 2 , 1 , 1 , 1 , 1 , "D");
 
         centerC.add(Lays.getEmptyLabel() ,
                 2 , 2 , 1 , 1 , 1 , 1, "D");
 
-        centerC.add(add ,
+        centerC.add( remove,
                 3 , 2 , 1 , 1 , 1 , 1, "D");
 
         centerC.add(Lays.getEmptyLabel() ,

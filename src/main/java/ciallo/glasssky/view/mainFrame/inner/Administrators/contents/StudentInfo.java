@@ -36,7 +36,7 @@ public class StudentInfo  extends JPanel {
     Integer[] classBox = new Integer[]{1, 2 ,3 ,4 ,5 ,6 ,7 , 8};
     private void setContents(int w, int h) {
         Font fontTitle = UIUnit.getFont(h, 10);
-        JLabel title = new JLabel("学分申请", SwingConstants.CENTER);
+        JLabel title = new JLabel("学生信息管理", SwingConstants.CENTER);
         title.setFont(fontTitle);
 
         JPanel center = new JPanel(new GridBagLayout());
@@ -94,9 +94,9 @@ public class StudentInfo  extends JPanel {
         //第三行
         centerC.add( Lays.getEmptyLabel(),
                 0 , 8 , 2 , 1 , 1 , 1 , "LD");
-        centerC.add(remove ,
-                2 , 8 , 1 , 1 , 1 , 1 , "D");
         centerC.add(add ,
+                2 , 8 , 1 , 1 , 1 , 1 , "D");
+        centerC.add( remove,
                 3 , 8 , 1 , 1 , 1 , 1, "D");
         centerC.add(assign ,
                 4 , 8 , 1 , 1 , 1 , 1, "D");
@@ -133,7 +133,7 @@ public class StudentInfo  extends JPanel {
                 }
             };
             DefaultTableModel model2 = new DefaultTableModel(new Object[][]{} ,
-                    new String[]{"姓名" , "账号" }){
+                    new String[]{"教师" , "账号" }){
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
@@ -147,10 +147,12 @@ public class StudentInfo  extends JPanel {
             JTableHeader tableHeader2 = table2.getTableHeader();
             JScrollPane pane1 = new JScrollPane(table1);
             JScrollPane pane2 = new JScrollPane(table2);
+            JComboBox<String> filter = new JComboBox<>(new String[]{"未分配", "全部" , "已分配" , });
             JButton confirm = new JButton("确认分配");
 
+
             Font font = UIUnit.getFont(h , 20);
-            UIUnit.setFont(font , table1 , table2 ,
+            UIUnit.setFont(font , table1 , table2 , filter,
                     tableHeader1 , tableHeader2 , confirm );
             table1.setRowHeight((int) (font.getSize() *1.5));
             table2.setRowHeight((int) (font.getSize() *1.5));
@@ -164,12 +166,28 @@ public class StudentInfo  extends JPanel {
                     0 , 0 , 3 , 1 , 3 , 7 , "LU");
             jdC.add(pane2 ,
                     3 , 0 , 2 , 1 , 2 , 7 , "UR");
+            jdC.add(filter ,
+                    0 , 1 , 1 , 1 ,1 , 1, "LD");
             jdC.add(Lays.getEmptyLabel() ,
-                    0 , 1 , 2 , 1 , 2 , 1 , "LD");
+                    1 , 1 , 1 , 1 , 1 , 1 , "D");
             jdC.add(confirm ,
                     2 , 1 , 1 , 1 , 1 , 1 , "D");
             jdC.add(Lays.getEmptyLabel() ,
                     3 , 1 , 2 , 1 , 2 , 1 , "DR");
+
+
+            filter.addActionListener(ee->{
+                String s = (String) filter.getSelectedItem();
+                if(s.equals("全部"))
+                    condition = "";
+                else if(s.equals("未分配"))
+                    condition = "and a.tutorId is null";
+                else
+                    condition = "and a.tutorId is not null";
+                flag = 1;
+                confirm.doClick();
+            });
+            filter.setSelectedIndex(0);
 
             table2.addMouseListener(new MouseAdapter() {
                 @Override
@@ -204,15 +222,18 @@ public class StudentInfo  extends JPanel {
         UpdateTutorDao.update(arr);
     }
 
+    String condition = "";
+    int flag = 0;
     private void setConfirm(JButton confirm, DefaultTableModel model1, DefaultTableModel model2){
         confirm.addActionListener(e->{
-
-            assigning(model1);
-            init();
-
+            if(flag == 0) {
+                assigning(model1);
+                init();
+            }
+            flag = 0;
             model1.setRowCount(0);
             model2.setRowCount(0);
-            Result result1 = GetNoTutorStudentDao.get();
+            Result result1 = GetNoTutorStudentDao.get(condition);
             Result result2 = GetTutorDao.get();
 
             ArrayList<Object[]> content = (ArrayList<Object[]>) result1.content;

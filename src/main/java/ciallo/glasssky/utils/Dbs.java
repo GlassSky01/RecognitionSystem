@@ -57,15 +57,9 @@ public class Dbs {
                     "    foreign key (tutorId) references users(id ) on delete cascade\n" +
                     ")ENGINE=InnoDB;");
             try {
-                //学生测试账号
-                DbOperators.execute("insert into users(id , username , password , role) value(1 , 'stu' , '123456' , 0);");
-                //教师测试账号
-                DbOperators.execute("insert into users(id , username , password , role) value(2 , 'tea' , '123456' , 1);");
                 //默认管理员
                 DbOperators.execute("insert into users(id , username , password , role) value(3 , 'root' , '123456' , 2);");
                 DbOperators.execute("insert into usersinformation(id , tutorId , name , grade , academy) value(1 , 2 , 'student' , 1 , '软件学院' );");
-                DbOperators.execute("insert into usersinformation(id , name ) value(2 , 'teacher');");
-                DbOperators.execute("insert into usersinformation(id , name ) value(3 , 'root');");
             } catch (Exception e) {
                 System.out.println("已插入初始角色");
             }
